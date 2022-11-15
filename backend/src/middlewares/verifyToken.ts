@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction, response } from "express";
+import { Request, Response, NextFunction } from "express";
 import { verify } from "jsonwebtoken";
 import auth from "../config/auth";
 
@@ -11,7 +11,7 @@ export function verifyTokenExists(
 ) {
   const authToken = req.headers.authorization;
 
-  if (!authToken) return res.status(401).json({ message: "Token bot exists" });
+  if (!authToken) return res.status(401).json({ message: "Token not exists" });
 
   const token = authToken.split(" ")[1];
 

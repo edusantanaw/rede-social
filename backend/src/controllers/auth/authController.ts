@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import { validate } from "../validations/userValidations";
-import { user } from "../prisma/client";
+import { validate } from "../../validations/userValidations";
+import { user } from "../../prisma/client";
 import bcrypt from "bcrypt";
-import { Token } from "../provider/accessToken";
+import { Token } from "../../provider/accessToken";
 
 interface User {
   name: string;
@@ -13,7 +13,7 @@ interface User {
 
 const tokenGenerate = new Token();
 
-export default class UserController {
+export default class AuthController {
   async create(req: Request, res: Response) {
     const { name, email, password, confirmPassword }: User = req.body;
 
@@ -41,6 +41,7 @@ export default class UserController {
         },
       });
       const accessToken = await tokenGenerate.generateAccessToken(newUser.id);
+     
       const refreshToken = await tokenGenerate.genRefreshToken(newUser.id);
 
       res.status(201).json({ accessToken, refreshToken });
@@ -53,15 +54,15 @@ export default class UserController {
     const { email, password }: User = req.body;
 
     try {
-      validate(email, "email");
-      validate(password, "password");
+      await validate(email, "email");
+      await validate(password, "password");
 
       const userReq = await user.findFirst({
         where: {
           email: email,
         },
       });
-
+      
       if (!userReq) throw "User not find!";
       const comparePassword = await bcrypt.compare(password, userReq.password);
 
@@ -70,15 +71,11 @@ export default class UserController {
       const accessToken = await tokenGenerate.generateAccessToken(userReq.id);
       const refreshToken = await tokenGenerate.genRefreshToken(userReq.id);
 
+
       res.status(201).json({ accessToken, refreshToken });
     } catch (error) {
       res.status(400).send({ error: error });
     }
   }
 
-  async getUserById() {}
-
-  async update() {}
-
-  async remove() {}
 }

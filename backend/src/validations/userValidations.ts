@@ -59,7 +59,8 @@ export async function validate(value: string, type: string): Promise<void> {
       res;
   }
 
-  if (!res) throw `${type} is invalid`;
-
-  return;
+  if (res) return;
+  
+    throw  `${type} is invalid`;
+ 
 }
