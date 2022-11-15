@@ -14,10 +14,8 @@ model User {
   id           String        @id @default(uuid())
   email        String        @unique
   name         String
-  bio          String?        @db.VarChar(300)
+  bio          String?       @db.VarChar(300)
   perfilPhoto  String?
-  followers    String[]
-  following    String[]
   password     String
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
@@ -25,14 +23,27 @@ model User {
   Comments     Comments[]
   Like         Like[]
   refreshToken RefreshToken?
+  followers    Follows[]     @relation("follower")
+  following    Follows[]     @relation("following")
 
   @@index([email])
   @@map("users")
 }
 
+model Follows {
+  follower    User   @relation("following", fields: [followerId], references: [id])
+  followerId  String
+  following   User   @relation("follower", fields: [followingId], references: [id])
+  followingId String
+
+  @@id([followerId, followingId])
+}
+
+
+
 model Post {
   id        String     @id @default(uuid())
-  content   String?    @db.VarChar(600)
+  content   String?
   author    User       @relation(fields: [authorId], references: [id])
   authorId  String
   image     String?

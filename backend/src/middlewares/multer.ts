@@ -3,9 +3,11 @@ import {Request, Response, NextFunction} from 'express'
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
+
     const type = req.url.split("/")[1];
+    console.log(type)
     if (type === "user") cb(null, "public/users");
-    else if (type === "posts") {
+    else if (type == "posts") {
       cb(null, "public/posts");
     }
   },
