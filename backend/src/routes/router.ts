@@ -12,9 +12,10 @@ const userController = new UserController();
 const router = Router();
 
 // auth routes
-
 router.post("/user", authController.create);
 router.post("/signin", authController.login);
+
+// refresh token
 
 // user routes
 router.get("/users", verifyTokenExists, userController.getAllUsers);
@@ -28,7 +29,7 @@ router.get(
   verifyTokenExists,
   userController.getUserFollowers
 );
-router.get("/users/:name", userController.findUserByName);
+router.get("/users/:name", verifyTokenExists, userController.findUserByName);
 router.post("/users/add/:id", verifyTokenExists, userController.addFollow);
 router.post(
   "/users/:id",
@@ -36,12 +37,25 @@ router.post(
   uploadImages,
   userController.update
 );
+router.patch("/users/update/:id", verifyTokenExists, userController.update);
+router.patch(
+  "/users/password/:id",
+  verifyTokenExists,
+  userController.updatePassword
+);
 
 //posts routes
 router.get("/posts", verifyTokenExists, postController.getAllPosts);
+router.get('/posts/feed/:id', verifyTokenExists, postController.myFeed)
 router.get("/posts/user/:id", verifyTokenExists, postController.getPostByUser);
+router.get('/posts/comments/:id', verifyTokenExists, postController.getPostComments)
 router.get("/posts/:id", verifyTokenExists, postController.getPostById);
 router.post("/posts", verifyTokenExists, uploadImages, postController.newPost);
 router.post("/posts/like/:post", verifyTokenExists, postController.addLike);
+router.post("/posts/comments/:id", verifyTokenExists, postController.addComment)
+router.patch("/posts/:id", verifyTokenExists, postController.update);
+router.delete("/posts", verifyTokenExists, postController.deletePost)
+
+
 
 export default router;

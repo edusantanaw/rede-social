@@ -6,9 +6,9 @@ const storage = multer.diskStorage({
 
     const type = req.url.split("/")[1];
     console.log(type)
-    if (type === "user") cb(null, "public/users");
+    if (type === "user") cb(null, "assets/users");
     else if (type == "posts") {
-      cb(null, "public/posts");
+      cb(null, "assets/posts");
     }
   },
   filename: (req, file, cb) => {

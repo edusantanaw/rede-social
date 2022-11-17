@@ -1,5 +1,5 @@
-import { post, like, client } from "../../prisma/client";
-import { Request,  Response } from "express";
+import { post, like, client, comments } from "../../prisma/client";
+import { Request, Response } from "express";
 import { Token } from "../../provider/accessToken";
 
 const tokenPorvider = new Token();
@@ -20,7 +20,7 @@ export class PostController {
           image: image[0].filename && image[0].filename,
         },
       });
-      
+
       res.status(201).json(newPost);
     } catch (error) {
       res.status(400).json({ error: error });
@@ -139,18 +139,83 @@ export class PostController {
     const userId = req.params.id;
 
     try {
-      if(!userId) throw "Id invalid"
+      if (!userId) throw "Id invalid";
       const posts: [] = await client.$queryRaw`
       select posts.content, posts.image from posts 
       inner join users on users.id = posts."authorId"
       where users.id = ${userId};
-    `
+    `;
       if (posts.length === 0) throw "No any post found";
-    
-      res.status(200).json(posts)
 
+      res.status(200).json(posts);
     } catch (error) {
       res.status(400).json({ error: error });
     }
+  }
+
+  // get all posts from users I'm following
+  async myFeed(req: Request, res: Response) {
+    const id = req.params.id;
+    const { start, end } = req.query;
+
+    const startToNumber = Number(start);
+    const endToNumber = Number(end);
+
+    try {
+      if (!id) throw "User invalid!";
+      const posts: string[] = await client.$queryRaw`
+          select content, image  from posts
+          inner join "Follows" on "Follows"."followerId" = posts."authorId"
+          where "followingId" = ${id}
+          Limit ${endToNumber} OFFSET ${startToNumber} 
+        `;
+      if (posts.length === 0) throw "Posts not found!";
+      res.status(200).json(posts);
+    } catch (error) {
+      res.status(400).json({ error: error });
+    }
+  }
+
+  async addComment(req: Request, res: Response) {
+    const id = req.params.id;
+    const { postId, comment } = req.body;
+    const userToken = await tokenPorvider.getUserByToken(req);
+    if (!userToken) return res.status(400).json({ error: "User not found!" });
+    try {
+      if (!id) throw "User not found!";
+      if (!comment) throw "Comment invalid!";
+      const findPost = await post.findFirst({
+        where: {
+          id: postId,
+        },
+      });
+      if (!findPost) throw "Post not find";
+
+      const newComment = await comments.create({
+        data: {
+          content: comment,
+          authorId: userToken?.id,
+          postId: findPost.id,
+        },
+      });
+      res.status(200).json(newComment);
+    } catch (error) {
+      res.status(400).json({ error: error });
+    }
+  }
+
+  async getPostComments(req: Request, res: Response) {
+    const id = req.params.id;
+
+    if (!id) res.status(400).json({ error: "Id invalid!" });
+    const postComments: string[] = await client.$queryRaw`
+      select  comments.content, comments.id as comentId, users.name, users.id, users."perfilPhoto" from comments 
+      inner join users on users.id = comments."authorId"
+      where comments."postId"= ${id}
+    `;
+    if (postComments.length === 0)
+      res.status(400).json({ error: "This post not have comments!" });
+
+    res.status(200).json(postComments);
   }
 }
