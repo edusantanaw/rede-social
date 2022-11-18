@@ -6,17 +6,18 @@ const storage = multer.diskStorage({
 
     const type = req.url.split("/")[1];
     console.log(type)
-    if (type === "user") cb(null, "assets/users");
+    if (type === "users") cb(null, "public/users");
     else if (type == "posts") {
-      cb(null, "assets/posts");
+      cb(null, "public/posts");
     }
   },
   filename: (req, file, cb) => {
-    cb(null, file.fieldname + "-" + Date.now() + ".jpg" || ".png" || ".wepg");
+    console.log(file)
+    cb(null, file.fieldname + "-" + Date.now()  + ".jpg" || ".png" || ".wepg");
   },
 });
 
-const upload = multer({ storage: storage }).array("image");
+const upload = multer({ storage: storage }).single("image");
 
 export const uploadImages = (req: Request, res: Response, next: NextFunction) => {
   upload(req, res, (err) => {

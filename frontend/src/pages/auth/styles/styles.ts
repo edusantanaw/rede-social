@@ -5,12 +5,11 @@ export const Container = styled.section`
   height: 100vh;
   display: flex;
   color: #fff;
-  background-color: #101010;
+  background-color: #000;
   gap: 0.4em;
-  box-shadow: inset 0px 0px 200px 100px #000;
-
   .logo {
     width: 50%;
+    height: 99vh;
     position: relative;
     .name {
       width: 100%;
@@ -20,8 +19,9 @@ export const Container = styled.section`
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding-top: 8em;
-      background: rgba(0, 0, 0, 0.5);
+      padding-top: 20%;
+      background: rgba(0, 0, 0, 0.6);
+      box-shadow: inset 0 0 100px 50px #000;
       h1 {
         font-size: 3em;
         color: #ee5622;
@@ -36,7 +36,7 @@ export const Container = styled.section`
 
     img {
       width: 100%;
-      height: 100vh;
+      height: 99vh;
       object-fit: cover;
       opacity: 0.5;
     }
@@ -54,6 +54,8 @@ export const Container = styled.section`
     border-radius: 9px;
     color: #fff;
     width: 50%;
+    height: 90vh;
+    box-shadow: inset 0 0 200px 60px #000;
     div {
       label {
         display: block;
@@ -85,9 +87,22 @@ export const Container = styled.section`
       }
     }
 
-    a {
+    span {
       color: #ee5622;
       text-decoration: none;
+      cursor: pointer;
+    }
+    .error {
+      color: red;
+    }
+    .input_error {
+      border: 1px solid red;
+    }
+
+    #error {
+      border: 1px solid red;
+      padding: 0.5em 3em;
+      color: red;
     }
   }
 `;

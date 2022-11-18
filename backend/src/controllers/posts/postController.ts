@@ -164,11 +164,13 @@ export class PostController {
     try {
       if (!id) throw "User invalid!";
       const posts: string[] = await client.$queryRaw`
-          select content, image  from posts
-          inner join "Follows" on "Follows"."followerId" = posts."authorId"
-          where "followingId" = ${id}
+      select "authorId", name, "perfilPhoto", image, content  from posts
+      inner join "Follows" on  "Follows"."followerId" = posts."authorId"
+      inner join users on users.id  = posts."authorId"
+          where "Follows"."followingId" = ${id}
           Limit ${endToNumber} OFFSET ${startToNumber} 
         `;
+      console.log(posts);
       if (posts.length === 0) throw "Posts not found!";
       res.status(200).json(posts);
     } catch (error) {

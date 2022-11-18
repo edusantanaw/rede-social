@@ -39,12 +39,21 @@ export default class AuthController {
           email: email,
           password: hashPassword,
         },
+        select: {
+          name: true,
+          id: true,
+          email: true,
+          perfilPhoto: true,
+          password: false,
+        },
       });
       const accessToken = await tokenGenerate.generateAccessToken(newUser.id);
-     
+
       const refreshToken = await tokenGenerate.genRefreshToken(newUser.id);
 
-      res.status(201).json({ accessToken, refreshToken });
+      const userResponse = newUser;
+
+      res.status(201).json({ userResponse, accessToken, refreshToken });
     } catch (error) {
       res.status(400).send({ error: error });
     }
@@ -61,8 +70,15 @@ export default class AuthController {
         where: {
           email: email,
         },
+        select: {
+          name: true,
+          id: true,
+          email: true,
+          perfilPhoto: true,
+          password: true,
+        },
       });
-      
+
       if (!userReq) throw "User not find!";
       const comparePassword = await bcrypt.compare(password, userReq.password);
 
@@ -71,11 +87,16 @@ export default class AuthController {
       const accessToken = await tokenGenerate.generateAccessToken(userReq.id);
       const refreshToken = await tokenGenerate.genRefreshToken(userReq.id);
 
+      const userResponse: { id: string; name: string; email: string, photo: any } = {
+        id: userReq.id,
+        name: userReq.name,
+        email: userReq.email,
+        photo: userReq.perfilPhoto
+      };
 
-      res.status(201).json({ accessToken, refreshToken });
+      res.status(201).json({ userResponse, accessToken, refreshToken });
     } catch (error) {
       res.status(400).send({ error: error });
     }
   }
-
 }

@@ -37,7 +37,7 @@ router.post(
   uploadImages,
   userController.update
 );
-router.patch("/users/update/:id", verifyTokenExists, userController.update);
+router.patch("/users/update/:id", verifyTokenExists, uploadImages, userController.update);
 router.patch(
   "/users/password/:id",
   verifyTokenExists,

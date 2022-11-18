@@ -32,12 +32,14 @@ export class UserController {
   async update(req: Request, res: Response) {
     const { name, email, bio }: User = req.body;
 
-    const perfilPhoto = req.files as Express.Multer.File[];
+    const perfilPhoto = req.file as Express.Multer.File;
     const id = req.params.id;
 
     try {
-      validate(name, "name");
-      validate(email, "email");
+      console.log(perfilPhoto)
+      console.log(name)
+      await validate(name, "name");
+      if(email) await validate(email, "email");
 
       const findUser = await user.findFirst({
         where: {
@@ -45,8 +47,10 @@ export class UserController {
         },
       });
       if (!findUser) throw "User not found!";
+      let photo = ''
+      if(perfilPhoto) photo =perfilPhoto.filename
 
-      if (findUser.email !== email) {
+      if (email && findUser.email !== email) {
         const findEmail = await user.findFirst({
           where: {
             email: email,
@@ -54,6 +58,7 @@ export class UserController {
         });
         if (findEmail) throw "Email is already being used!";
       }
+      
       const userUpdated = await user.update({
         where: {
           id: id,
@@ -62,7 +67,7 @@ export class UserController {
           name: name,
           email: email,
           bio: bio,
-          perfilPhoto: perfilPhoto[0].filename,
+          perfilPhoto: photo
         },
       });
 

@@ -8,8 +8,9 @@ export default function useAuth() {
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
+    console.log(user)
     if (user) {
-      user.logged ? setIsAuth(true) : setIsAuth(false);
+      user.userReducer.logged ? setIsAuth(true) : setIsAuth(false);
     }
   }, [user]);
 

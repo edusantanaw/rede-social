@@ -9,7 +9,7 @@ const app = express();
 app.use(cors({ credentials: true, origin: " http://127.0.0.1:5173" }));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(express.static("assets"));
+app.use(express.static("../public"));
 
 app.use("/", router);
 
