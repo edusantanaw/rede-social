@@ -10,6 +10,7 @@ import useAuth from "./hooks/useAuth";
 import Auth from "./pages/auth/Auth";
 import Header from "./layout/header/Header";
 import { Chat } from "./layout/chat/Chat";
+import Perfil from "./pages/perfil/Perfil";
 
 function App() {
   const { isAuth } = useAuth();
@@ -24,6 +25,7 @@ function App() {
           path="/auth"
           element={!isAuth ? <Auth /> : <Navigate to="/" />}
         />
+        <Route path="/perfil/:id" element={isAuth ? <Perfil /> : <Navigate to="/auth" />} />
       </Routes>
       <Chat />
     </Router>

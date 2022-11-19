@@ -157,7 +157,7 @@ export class PostController {
     try {
       if (!userId) throw "Id invalid";
       const posts: [] = await client.$queryRaw`
-      select posts.content, posts.image from posts 
+      select users.name, users.id, users."perfilPhoto", posts.id, posts.content, posts.image from posts 
       inner join users on users.id = posts."authorId"
       where users.id = ${userId};
     `;

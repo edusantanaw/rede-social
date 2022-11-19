@@ -17,7 +17,7 @@ const Home = () => {
     <Container>
       {newPostModal && <NewPostModal handleModal = {showModal} />}
       <NewPost handleModal= {showModal} />
-      <Posts url="feed" />
+      <Posts url={`/posts/feed/c24eecc2-e785-4f48-b5db-b583a5cb71cc`} />
     </Container>
   );
 };

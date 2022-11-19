@@ -4,6 +4,7 @@ import { BiMessageSquare, BiSearchAlt2 } from "react-icons/bi";
 import { FaUserFriends } from "react-icons/fa";
 import { IoNotifications } from "react-icons/io5";
 import { HiHome } from "react-icons/hi";
+import { Link } from "react-router-dom";
 
 const user = JSON.parse(localStorage.getItem("App:user") || "{}");
 const Header = () => {
@@ -29,7 +30,9 @@ const Header = () => {
           <IoNotifications />
         </li>
         <li>
+          <Link to ={`/perfil/${user.id}`} >
           <img src={`http://localhost:5001/users/${user.photo}`} alt="" />
+          </Link>
         </li>
       </ul>
     </HeaderContainer>

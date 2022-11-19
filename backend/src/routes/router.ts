@@ -30,6 +30,7 @@ router.get(
   userController.getUserFollowers
 );
 router.get("/users/:name", verifyTokenExists, userController.findUserByName);
+router.get('/users/perfil/:id', verifyTokenExists, userController.getUserById)
 router.post("/users/add/:id", verifyTokenExists, userController.addFollow);
 router.post(
   "/users/:id",
