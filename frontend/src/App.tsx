@@ -8,7 +8,7 @@ import {
 import Home from "./pages/home/Home";
 import useAuth from "./hooks/useAuth";
 import Auth from "./pages/auth/Auth";
-import Header from "./layout/header/Header";
+import Nav from "./layout/nav/Nav";
 import { Chat } from "./layout/chat/Chat";
 import Perfil from "./pages/perfil/Perfil";
 
@@ -18,7 +18,7 @@ function App() {
   return (
     <Router>
       <Global />
-      {isAuth && <Header />}
+      {isAuth && <Nav />}
       <Routes>
         <Route path="/" element={isAuth ? <Home /> : <Navigate to="/auth" />} />
         <Route
@@ -27,7 +27,7 @@ function App() {
         />
         <Route path="/perfil/:id" element={isAuth ? <Perfil /> : <Navigate to="/auth" />} />
       </Routes>
-      <Chat />
+    { isAuth && <Chat />}
     </Router>
   );
 }

@@ -159,7 +159,8 @@ export class PostController {
       const posts: [] = await client.$queryRaw`
       select users.name, users.id, users."perfilPhoto", posts.id, posts.content, posts.image from posts 
       inner join users on users.id = posts."authorId"
-      where users.id = ${userId};
+      where users.id = ${userId}
+      order by posts."createdAt" desc;
     `;
       if (posts.length === 0) throw "No any post found";
 

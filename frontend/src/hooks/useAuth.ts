@@ -14,5 +14,7 @@ export default function useAuth() {
     }
   }, [user]);
 
+  console.log(user)
+
   return { isAuth, isLoading };
 }

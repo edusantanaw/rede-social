@@ -25,4 +25,11 @@ export async function auth(data: User) {
   return response;
 }
 
+export async function logout() {
+    localStorage.removeItem('App:user')
+    localStorage.removeItem('@App:token')
+
+    return
+}
+
 

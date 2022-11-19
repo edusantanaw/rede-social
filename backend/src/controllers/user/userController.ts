@@ -24,7 +24,8 @@ export class UserController {
         id: id,
       },
     });
-    if (!user) res.status(400).json({ error: "User not found!" });
+    console.log(userReq)
+    if (!userReq) res.status(400).json({ error: "User not found!" });
 
     res.status(200).json(userReq);
   }
@@ -122,7 +123,7 @@ export class UserController {
       if (!name) throw "Name invalid!";
       const users = await client.$queryRaw`
             select * from users
-            where name like ${`%${name}%`}
+            where name like ${`${name}%`}
         `;
 
       if (!users) throw "User not found!";
@@ -168,7 +169,7 @@ export class UserController {
     const id = req.params.id;
 
     const followers: object[] = await client.$queryRaw`
-      select name, users.id from "Follows"
+      select name, users.id, "perfilPhoto" from "Follows"
       inner join users on users.id = "Follows"."followerId"
       where "Follows"."followerId" = ${id} 
     `

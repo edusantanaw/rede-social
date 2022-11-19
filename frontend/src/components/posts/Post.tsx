@@ -14,7 +14,7 @@ interface post {
   perfilPhoto?: string;
 }
 
-const user = JSON.parse(localStorage.getItem("App:user") || "");
+const user = JSON.parse(localStorage.getItem("App:user") || "{}");
 
 interface like {
   id: string;

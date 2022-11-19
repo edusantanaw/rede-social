@@ -38,6 +38,7 @@ export default class AuthController {
           name: name,
           email: email,
           password: hashPassword,
+          perfilPhoto: "default.jpg"
         },
         select: {
           name: true,

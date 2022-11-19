@@ -4,6 +4,7 @@ import { useApi } from "../../hooks/useApi";
 import { addNewComment } from "../../slices/postSlices";
 import { useAppDispatch } from "../../store/store";
 import { Api } from "../../utils/api";
+import Comment from "./Comment";
 
 interface post {
   user: string;
@@ -12,6 +13,14 @@ interface post {
   name: string;
   id: string;
   perfilPhoto: string;
+}
+
+interface comment {
+  name: string;
+  perfilPhoto: string;
+  content: string;
+  user: string;
+  id: string;
 }
 
 const token = localStorage.getItem("@App:token");
@@ -24,7 +33,7 @@ const PostModal = ({
   handleModal: () => void;
 }) => {
   const { data, loading } = useApi(`/posts/${id}`);
-  const [comments, setComments] = useState<string[]>([]);
+  const [comments, setComments] = useState<comment[]>([]);
   const comment = useRef<HTMLInputElement | null>(null);
 
   const dispatch = useAppDispatch();
@@ -78,10 +87,12 @@ const PostModal = ({
                   <span>{post.name}</span>
                 </div>
                 <p>{post.content}</p>
-                <div>
+                <ul>
                   {comments &&
-                    comments.map((comment, i: number) => <div key={i}></div>)}
-                </div>
+                    comments.map((comment, i: number) =>(
+                      <Comment comment={comment} key= {i} />
+                     ))}
+                </ul>
                 <div className="new_comment">
                   <input type="text" placeholder="example..." ref={comment} />
                   <button onClick={() => handleComment()}>Send</button>
@@ -128,7 +139,7 @@ const Modal = styled.div`
       padding: 1em;
       display: flex;
       flex-direction: column;
-      gap: 1em;
+      gap: 0.5em;
       position: relative;
       .header {
         gap: 0.7em;
@@ -162,6 +173,27 @@ const Modal = styled.div`
           background-color: #00000063;
         }
       }
+    }
+    ul{
+     overflow-y: auto;
+     display: flex;
+     flex-direction: column; 
+     gap: 0.5em;
+     height: 75%;
+
+     scroll-behavior:smooth;
+     scrollbar-width: 1px;
+
+     &::-webkit-scrollbar{
+      width: 0.5em;
+      background-color: #272525;
+      border-radius: 4px;
+     }
+
+     &::-webkit-scrollbar-thumb{
+      background-color: #fff;
+      border-radius: 4px;
+     }
     }
   }
 `;

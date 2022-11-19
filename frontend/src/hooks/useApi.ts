@@ -8,7 +8,7 @@ export  function useApi(url: string) {
   const [data, setData] = useState<any>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string>("");
-
+  
   useEffect(() => {
     Api.get(url ? url : '/', {
       headers: {
