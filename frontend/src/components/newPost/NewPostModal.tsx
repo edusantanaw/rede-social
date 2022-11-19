@@ -1,18 +1,43 @@
-import React from "react";
 import styled from "styled-components";
+import { useAppDispatch } from "../../store/store";
+import { newPost as create } from "../../slices/postSlices";
+import React, { useRef, useState } from "react";
 
 const NewPost = ({ handleModal }: { handleModal: () => void }) => {
+  const dispatch = useAppDispatch();
+  const content = useRef<HTMLTextAreaElement | null>(null);
+  const [image, setImage] = useState<File | string>("");
+
+  const handleImage = (e: React.FormEvent<HTMLInputElement>) => {
+    const img = (e.target as HTMLInputElement).files;
+    console.log(img)
+    if (img) setImage(img[0]);
+  };
+
+  async function createPost(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const formData  = new FormData() 
+    if (content || image) {
+      formData.append("content", content.current ? content.current.value : "")
+      formData.append('image', image)
+      formData.append('url', "/posts")
+
+      await dispatch(create(formData));
+      handleModal();
+    }
+  }
+
   return (
     <Modal>
       <div onClick={handleModal} className="close"></div>
-      <form>
+      <form onSubmit={(e) => createPost(e)}>
         <label htmlFor="content">Content</label>
-        <textarea name="content" id="text"></textarea>
+        <textarea name="content" id="text" ref={content}></textarea>
         <div className="buttons">
           <label htmlFor="image" id="img">
             Image
           </label>
-          <input type="file" id="image" />
+          <input type="file" id="image" onChange={(e) => handleImage(e)} />
           <input type="submit" />
         </div>
       </form>
@@ -31,6 +56,7 @@ const Modal = styled.div`
   background-color: rgba(0, 0, 0, 0.4);
   display: flex;
   justify-content: center;
+  z-index: 2;
   .close {
     width: 100%;
     height: 100vh;
@@ -53,9 +79,9 @@ const Modal = styled.div`
       background-color: rgba(255, 255, 255, 0.3);
       border-radius: 5px;
       margin-bottom: 2em;
-      color:#fff;
-        padding: 1em;
-      &:focus{
+      color: #fff;
+      padding: 1em;
+      &:focus {
         outline: none;
       }
     }

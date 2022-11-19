@@ -9,6 +9,8 @@ interface User {
   type: string
 }
 
+
+
 export async function auth(data: User) {
   const response = await Api.post(data.type, data)
     .then((response) => response.data)

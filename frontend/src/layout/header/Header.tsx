@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { HeaderContainer } from "./styles";
-import { BiMessageSquare } from "react-icons/bi";
+import { BiMessageSquare, BiSearchAlt2 } from "react-icons/bi";
 import { FaUserFriends } from "react-icons/fa";
 import { IoNotifications } from "react-icons/io5";
 import { HiHome } from "react-icons/hi";
@@ -11,6 +11,10 @@ const Header = () => {
   return (
     <HeaderContainer>
       <h1>Header</h1>
+      <div className="search">
+      <input type="text" />
+        <BiSearchAlt2 />
+      </div>
       <ul>
         <li>
           <HiHome />

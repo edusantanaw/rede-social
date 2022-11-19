@@ -49,12 +49,15 @@ router.get("/posts", verifyTokenExists, postController.getAllPosts);
 router.get('/posts/feed/:id', verifyTokenExists, postController.myFeed)
 router.get("/posts/user/:id", verifyTokenExists, postController.getPostByUser);
 router.get('/posts/comments/:id', verifyTokenExists, postController.getPostComments)
+router.get('/posts/like/:id', verifyTokenExists, postController.getUsersPostLike)
 router.get("/posts/:id", verifyTokenExists, postController.getPostById);
 router.post("/posts", verifyTokenExists, uploadImages, postController.newPost);
 router.post("/posts/like/:post", verifyTokenExists, postController.addLike);
 router.post("/posts/comments/:id", verifyTokenExists, postController.addComment)
 router.patch("/posts/:id", verifyTokenExists, postController.update);
-router.delete("/posts", verifyTokenExists, postController.deletePost)
+router.delete("/posts/:id", verifyTokenExists, postController.deletePost)
+
+// 08007001019
 
 
 

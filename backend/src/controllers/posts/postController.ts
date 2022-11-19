@@ -1,4 +1,4 @@
-import { post, like, client, comments } from "../../prisma/client";
+import { post, like, client, comments, user } from "../../prisma/client";
 import { Request, Response } from "express";
 import { Token } from "../../provider/accessToken";
 
@@ -6,18 +6,21 @@ const tokenPorvider = new Token();
 export class PostController {
   async newPost(req: Request, res: Response) {
     const { content } = req.body;
-    const image = req.files as Express.Multer.File[];
+
+    const image = req.file as Express.Multer.File;
     const user = await tokenPorvider.getUserByToken(req);
 
     try {
       if (!user) throw "User is invalid";
       if (!image && !content) throw "Content/image not find!";
+      let img = "";
+      if (image) img = image.filename;
 
       const newPost = await post.create({
         data: {
           authorId: user.id,
           content: content,
-          image: image[0].filename && image[0].filename,
+          image: img,
         },
       });
 
@@ -32,10 +35,9 @@ export class PostController {
 
     try {
       const postReq = await client.$queryRaw`
-        select posts.id, content, image  from posts 
-        inner join likes    on likes."postId" = posts.id
+        select posts.id, content, name, users.id as userId, "perfilPhoto", image  from posts 
+        inner join users on users.id = posts."authorId"
         where posts.id = ${id};  
-       
       `;
       if (!postReq) throw "Post not find!";
 
@@ -116,13 +118,27 @@ export class PostController {
       if (!findPost) throw "Post not found";
       if (!findPost.id) throw "Post not found!";
 
-      await like.create({
-        data: {
-          userId: userToken.id,
-          postId: findPost.id,
-        },
-      });
-
+      // verify if like already exists
+      const verifyLike: [] = await client.$queryRaw`
+          select * from likes
+          where "userId" = ${userToken.id}
+          AND "postId" = ${postId}
+      `;
+      if (verifyLike.length > 0) {
+        await like.deleteMany({
+          where: {
+            postId: postId,
+            userId: userToken.id,
+          },
+        });
+      } else {
+        await like.create({
+          data: {
+            userId: userToken.id,
+            postId: findPost.id,
+          },
+        });
+      }
       res.status(200).json("success");
     } catch (error) {
       res.status(400).json({ error: error });
@@ -164,13 +180,13 @@ export class PostController {
     try {
       if (!id) throw "User invalid!";
       const posts: string[] = await client.$queryRaw`
-      select "authorId", name, "perfilPhoto", image, content  from posts
+      select "authorId", name, posts.id, "perfilPhoto", image, content  from posts
       inner join "Follows" on  "Follows"."followerId" = posts."authorId"
       inner join users on users.id  = posts."authorId"
-          where "Follows"."followingId" = ${id}
-          Limit ${endToNumber} OFFSET ${startToNumber} 
+      where "Follows"."followingId" = ${id}
+      order by posts."createdAt" desc
+      Limit ${endToNumber} OFFSET ${startToNumber} 
         `;
-      console.log(posts);
       if (posts.length === 0) throw "Posts not found!";
       res.status(200).json(posts);
     } catch (error) {
@@ -178,9 +194,22 @@ export class PostController {
     }
   }
 
+  async getUsersPostLike(req: Request, res: Response) {
+    const id = req.params.id;
+    const userLike = await like.findMany({
+      where: {
+        postId: id,
+      },
+    });
+    if (!userLike) return res.status(400).json({ error: "Users not found!" });
+
+    res.status(200).json(userLike);
+  }
+
   async addComment(req: Request, res: Response) {
     const id = req.params.id;
-    const { postId, comment } = req.body;
+    const { comment } = req.body;
+    console.log(comment)
     const userToken = await tokenPorvider.getUserByToken(req);
     if (!userToken) return res.status(400).json({ error: "User not found!" });
     try {
@@ -188,7 +217,7 @@ export class PostController {
       if (!comment) throw "Comment invalid!";
       const findPost = await post.findFirst({
         where: {
-          id: postId,
+          id: id,
         },
       });
       if (!findPost) throw "Post not find";
@@ -209,15 +238,18 @@ export class PostController {
   async getPostComments(req: Request, res: Response) {
     const id = req.params.id;
 
-    if (!id) res.status(400).json({ error: "Id invalid!" });
-    const postComments: string[] = await client.$queryRaw`
-      select  comments.content, comments.id as comentId, users.name, users.id, users."perfilPhoto" from comments 
+    try {
+      if (!id) res.status(400).json({ error: "Id invalid!" });
+      const postComments: string[] = await client.$queryRaw`
+      select  comments.content, comments.id , name, users.id as user, users."perfilPhoto" from comments 
       inner join users on users.id = comments."authorId"
       where comments."postId"= ${id}
     `;
-    if (postComments.length === 0)
-      res.status(400).json({ error: "This post not have comments!" });
-
-    res.status(200).json(postComments);
+      console.log(postComments);
+      if (postComments.length === 0) throw "This post not have comments!";
+      res.status(200).json(postComments);
+    } catch (error) {
+      res.status(400).json({ error: error });
+    }
   }
 }

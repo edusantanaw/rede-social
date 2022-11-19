@@ -8,7 +8,8 @@ import {
 import Home from "./pages/home/Home";
 import useAuth from "./hooks/useAuth";
 import Auth from "./pages/auth/Auth";
-import Header from "./layout/Header";
+import Header from "./layout/header/Header";
+import { Chat } from "./layout/chat/Chat";
 
 function App() {
   const { isAuth } = useAuth();
@@ -24,6 +25,7 @@ function App() {
           element={!isAuth ? <Auth /> : <Navigate to="/" />}
         />
       </Routes>
+      <Chat />
     </Router>
   );
 }

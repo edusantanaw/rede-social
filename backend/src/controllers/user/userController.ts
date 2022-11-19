@@ -167,25 +167,26 @@ export class UserController {
   async getUserFollowers(req: Request, res: Response) {
     const id = req.params.id;
 
-    const followers = await follows.findMany({
-      where: {
-        followerId: id,
-      },
-    });
+    const followers: object[] = await client.$queryRaw`
+      select name, users.id from "Follows"
+      inner join users on users.id = "Follows"."followerId"
+      where "Follows"."followerId" = ${id} 
+    `
 
     if (followers.length === 0)
       return res.status(400).json({ error: "not found any follower!" });
     console.log(followers);
     res.status(200).json(followers);
   }
+
   async getUserFollowing(req: Request, res: Response) {
     const id = req.params.id;
 
-    const followings = await follows.findMany({
-      where: {
-        followingId: id,
-      },
-    });
+    const followings: object[]  = await client.$queryRaw`
+    select name, users.id, "perfilPhoto" from "Follows"
+    inner join users on users.id = "Follows"."followingId"
+    where "Follows"."followingId" = ${id}; 
+  `
 
     if (followings.length === 0)
       return res.status(400).json({ error: "not found any follower!" });

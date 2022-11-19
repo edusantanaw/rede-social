@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { auth } from "../services/userService";
 
 const user = JSON.parse(localStorage.getItem("App:user") || "{}");
-console.log(user)
+
 interface User {
     name?: string;
     password: string;

@@ -5,14 +5,12 @@ const storage = multer.diskStorage({
   destination: (req, file, cb) => {
 
     const type = req.url.split("/")[1];
-    console.log(type)
     if (type === "users") cb(null, "public/users");
     else if (type == "posts") {
       cb(null, "public/posts");
     }
   },
   filename: (req, file, cb) => {
-    console.log(file)
     cb(null, file.fieldname + "-" + Date.now()  + ".jpg" || ".png" || ".wepg");
   },
 });
