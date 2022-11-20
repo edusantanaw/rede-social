@@ -88,11 +88,11 @@ export default class AuthController {
       const accessToken = await tokenGenerate.generateAccessToken(userReq.id);
       const refreshToken = await tokenGenerate.genRefreshToken(userReq.id);
 
-      const userResponse: { id: string; name: string; email: string, photo: any } = {
+      const userResponse: { id: string; name: string; email: string, perfilPhoto: any } = {
         id: userReq.id,
         name: userReq.name,
         email: userReq.email,
-        photo: userReq.perfilPhoto
+        perfilPhoto: userReq.perfilPhoto
       };
 
       res.status(201).json({ userResponse, accessToken, refreshToken });

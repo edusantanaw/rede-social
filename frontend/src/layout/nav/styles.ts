@@ -42,6 +42,7 @@ export const HeaderContainer = styled.header`
       }
       img {
         width: 2em;
+        height: 2em;
         border-radius: 50%;
       }
     }

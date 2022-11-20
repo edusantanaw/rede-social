@@ -70,7 +70,8 @@ const Modal = styled.div`
     width: 32em;
     height: 18em;
     padding: 1em;
-    background-color: #1b1b2b;
+    background-color: #000;
+    border: 1px solid #a0a0a0;
     border-radius: 10px;
     textarea {
       width: 100%;

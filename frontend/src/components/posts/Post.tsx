@@ -14,7 +14,6 @@ interface post {
   perfilPhoto?: string;
 }
 
-const user = JSON.parse(localStorage.getItem("App:user") || "{}");
 
 interface like {
   id: string;
@@ -28,6 +27,7 @@ export const Post = ({ post, key }: { post: post; key: number }) => {
   const [liked, setLiked] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [modalId, setModalId] = useState("s");
+  const user = JSON.parse(localStorage.getItem("App:user") || "{}");
 
   const { data } = useApi(`/posts/like/${post.id}`);
 

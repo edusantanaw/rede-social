@@ -9,7 +9,7 @@ export const Container = styled.section`
   .new_post {
     width: 32em;
     border-radius: 10px;
-    background-color: #1b1b2b;
+    background-color: #000;
     padding: 1em;
     cursor: pointer;
     .top {
@@ -18,6 +18,7 @@ export const Container = styled.section`
       gap: 1em;
       img {
         width: 2.2em;
+        height: 2.2em;
         border-radius: 50%;
         border: 2px solid #ee5622;
       }

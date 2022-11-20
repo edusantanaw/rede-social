@@ -7,7 +7,7 @@ const NewPost = ({handleModal}: {handleModal: ()=> void }) => {
     <div className="new_post" onClick={handleModal}>
     <div className="top">
       <img
-        src={`http://localhost:5001/users/${user.photo}`}
+        src={`http://localhost:5001/users/${user.perfilPhoto}`}
         alt="user photo"
       />
       <input

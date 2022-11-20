@@ -127,7 +127,8 @@ const Modal = styled.div`
   .post {
     z-index: 5;
     display: flex;
-    background-color: #1f2937;
+    background-color: #000;
+    border: 1px solid #a0a0a0;
     border-radius: 10px;
     padding: 1em;
     max-height: 35em;
@@ -146,11 +147,16 @@ const Modal = styled.div`
         display: flex;
         align-items: center;
         width: 25em;
+        border: 0;
+        padding-bottom: 0;
         img {
           width: 2em;
+          height: 2em;
+          object-fit: cover;
           border-radius: 50%;
         }
       }
+
       .new_comment {
         position: absolute;
         bottom: 10px;
@@ -170,7 +176,7 @@ const Modal = styled.div`
           cursor: pointer;
           border-radius: 5px;
           border: none;
-          background-color: #00000063;
+          background-color: #fff;
         }
       }
     }

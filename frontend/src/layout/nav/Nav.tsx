@@ -71,7 +71,7 @@ const Nav = () => {
           >
             <Link to={`/perfil/${user.id}`}>
               <img
-                src={`http://localhost:5001/users/${user.photo}`}
+                src={`http://localhost:5001/users/${user.perfilPhoto}`}
                 alt="user photo"
               />
               <span>Perfil</span>
@@ -84,9 +84,10 @@ const Nav = () => {
           <li
             onClick={() => {
               showSearch ? setShowSearch(false) : "";
+              handleLogout();
             }}
           >
-            <BiLogOut onClick={() => handleLogout()} />
+            <BiLogOut />
             <span>Logout</span>
           </li>
         </ul>

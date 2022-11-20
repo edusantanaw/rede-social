@@ -24,7 +24,7 @@ export class UserController {
         id: id,
       },
     });
-    console.log(userReq)
+    console.log(userReq);
     if (!userReq) res.status(400).json({ error: "User not found!" });
 
     res.status(200).json(userReq);
@@ -37,10 +37,8 @@ export class UserController {
     const id = req.params.id;
 
     try {
-      console.log(perfilPhoto)
-      console.log(name)
       await validate(name, "name");
-      if(email) await validate(email, "email");
+      if (email) await validate(email, "email");
 
       const findUser = await user.findFirst({
         where: {
@@ -48,8 +46,9 @@ export class UserController {
         },
       });
       if (!findUser) throw "User not found!";
-      let photo = ''
-      if(perfilPhoto) photo =perfilPhoto.filename
+      let photo: string | null = "";
+      if (perfilPhoto) photo = perfilPhoto.filename;
+      else photo = findUser.perfilPhoto;
 
       if (email && findUser.email !== email) {
         const findEmail = await user.findFirst({
@@ -59,7 +58,7 @@ export class UserController {
         });
         if (findEmail) throw "Email is already being used!";
       }
-      
+
       const userUpdated = await user.update({
         where: {
           id: id,
@@ -68,7 +67,7 @@ export class UserController {
           name: name,
           email: email,
           bio: bio,
-          perfilPhoto: photo
+          perfilPhoto: photo,
         },
       });
 
@@ -137,7 +136,7 @@ export class UserController {
   async addFollow(req: Request, res: Response) {
     // follower user
     const id = req.params.id;
-
+    console.log(id);
     // user token
     const userByToken = await tokenPorvider.getUserByToken(req);
 
@@ -153,10 +152,11 @@ export class UserController {
       if (!findUser) throw "User not found";
       if (!findUser.name) throw "User not found!";
 
+      console.log(userByToken);
       await follows.create({
         data: {
-          followerId: userByToken.id,
-          followingId: findUser.id,
+          followerId: findUser.id,
+          followingId: userByToken.id,
         },
       });
       res.status(200).json("Following with success!");
@@ -165,29 +165,27 @@ export class UserController {
     }
   }
 
-  async getUserFollowers(req: Request, res: Response) {
+  async getUserFollowing(req: Request, res: Response) {
     const id = req.params.id;
 
     const followers: object[] = await client.$queryRaw`
       select name, users.id, "perfilPhoto" from "Follows"
       inner join users on users.id = "Follows"."followerId"
-      where "Follows"."followerId" = ${id} 
-    `
-
+      where "Follows"."followingId" = ${id} 
+    `;
     if (followers.length === 0)
       return res.status(400).json({ error: "not found any follower!" });
-    console.log(followers);
     res.status(200).json(followers);
   }
 
-  async getUserFollowing(req: Request, res: Response) {
+  async getUserFollowers(req: Request, res: Response) {
     const id = req.params.id;
 
-    const followings: object[]  = await client.$queryRaw`
+    const followings: object[] = await client.$queryRaw`
     select name, users.id, "perfilPhoto" from "Follows"
     inner join users on users.id = "Follows"."followingId"
-    where "Follows"."followingId" = ${id}; 
-  `
+    where "Follows"."followerId" = ${id}; 
+  `;
 
     if (followings.length === 0)
       return res.status(400).json({ error: "not found any follower!" });
@@ -201,4 +199,3 @@ export class UserController {
     res.status(200).send(users);
   }
 }
-

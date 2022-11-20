@@ -1,6 +1,4 @@
-import React from "react";
-import { string } from "yup";
-import styled from 'styled-components'
+import styled from "styled-components";
 interface comment {
   name: string;
   perfilPhoto: string;
@@ -12,7 +10,7 @@ interface comment {
 const Comment = (comment: { comment: comment }) => {
   return (
     <Container>
-      <div className="header">
+      <div className="header_comment">
         <img
           src={`http://localhost:5001/users/${comment.comment.perfilPhoto}`}
           alt="user photo"
@@ -26,13 +24,17 @@ const Comment = (comment: { comment: comment }) => {
 
 export default Comment;
 
-
 const Container = styled.li`
-    
-    .header{
-        h3{
-            font-weight: 400;
-        }
+  background-color: #1f1d1d5f !important;
+  .header_comment {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+    img {
+      width: 2em;
+      height: 2em;
+      object-fit: cover;
+      border-radius: 50%;
     }
-
-`
+  }
+`;

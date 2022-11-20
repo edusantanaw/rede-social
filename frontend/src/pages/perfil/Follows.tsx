@@ -3,28 +3,21 @@ import { useApi } from "../../hooks/useApi";
 import styled from "styled-components";
 
 interface user {
-  id: string;
   perfilPhoto: string;
   name: string;
 }
 
 const Follows = ({
-  handleFollowers,
   type,
-  id,
   handleModal,
   show,
+  data,
 }: {
-  handleFollowers: (total: number, type: string) => void;
+  data: user[];
   type: string;
-  id: string;
   handleModal: () => void;
   show: boolean;
 }) => {
-  const { data } = useApi(`/users/${type}/${id}`);
-
-  handleFollowers(data.length, type);
-  console.log(show);
   return (
     <Container show={show}>
       <div className="close" onClick={() => handleModal()}></div>
@@ -75,20 +68,20 @@ const Container = styled.div<{ show: boolean }>`
     display: flex;
     flex-direction: column;
     align-items: center;
-    h2{
-        text-transform: uppercase;
-        padding: 0.5em;
+    h2 {
+      text-transform: uppercase;
+      padding: 0.5em;
     }
-    span{
-        text-align: center;
-        padding: 1em;
+    span {
+      text-align: center;
+      padding: 1em;
     }
     li {
-        width: 100%;
-        display: flex;
-        align-items: center;
-        padding: 1em;
-        gap: 1em;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      padding: 1em;
+      gap: 1em;
       img {
         width: 2.5em;
         border-radius: 50%;

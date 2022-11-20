@@ -6,17 +6,18 @@ interface User {
   password: string;
   email: string;
   confirmPassword?: string;
-  type: string
+  type: string;
 }
 
-
+const user = JSON.parse(localStorage.getItem("App:user") || "{}");
+const token = localStorage.getItem("@App:token");
 
 export async function auth(data: User) {
   const response = await Api.post(data.type, data)
     .then((response) => response.data)
     .catch((error) => error.response.data);
 
-    console.log(response)
+  console.log(response);
 
   if (response.userResponse && response.accessToken) {
     localStorage.setItem("App:user", JSON.stringify(response.userResponse));
@@ -26,10 +27,34 @@ export async function auth(data: User) {
 }
 
 export async function logout() {
-    localStorage.removeItem('App:user')
-    localStorage.removeItem('@App:token')
+  localStorage.removeItem("App:user");
+  localStorage.removeItem("@App:token");
 
-    return
+  return;
 }
 
+export async function update(data: FormData) {
+  const response = await Api.patch(`/users/update/${user.id}`, data, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then((response) => response.data)
+    .catch((error) => error.response.data);
+  if (response.userUpdated)
+    localStorage.setItem("App:user", JSON.stringify(response.userUpdated));
 
+  return response;
+}
+
+export async function addFollow(id: string) {
+  const response = await Api.post(`/users/add/${id}`, id, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then((response) => response.data)
+    .catch((error) => error.response.data);
+  console.log(response);
+  return response;
+}
