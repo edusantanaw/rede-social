@@ -25,9 +25,12 @@ function App() {
           path="/auth"
           element={!isAuth ? <Auth /> : <Navigate to="/" />}
         />
-        <Route path="/perfil/:id" element={isAuth ? <Perfil /> : <Navigate to="/auth" />} />
+        <Route
+          path="/perfil/:id"
+          element={isAuth ? <Perfil /> : <Navigate to="/auth" />}
+        />
       </Routes>
-    { isAuth && <Chat />}
+      {isAuth && <Chat />}
     </Router>
   );
 }

@@ -8,7 +8,7 @@ export const Chat = () => {
   const [visible, setVisible] = useState<boolean>(false)
 console.log(visible)
   const { data, loading, error } = useApi(
-    `/users/following/c24eecc2-e785-4f48-b5db-b583a5cb71cc`
+    `/users/following/${id}`
   );
   console.log(data);
   return (

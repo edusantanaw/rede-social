@@ -41,6 +41,7 @@ export const ChatContainer = styled.div`
       gap: 1em;
       img {
         width: 2em;
+        height: 2em;
         border-radius: 50%;
       }
     }

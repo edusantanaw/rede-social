@@ -5,7 +5,8 @@ export const Container = styled.section`
   display: flex;
   align-items: center;
   flex-direction: column;
-  padding-top: 7em;
+  padding-top: 8em;
+  padding-left: 7em;
   .new_post {
     width: 32em;
     border-radius: 10px;

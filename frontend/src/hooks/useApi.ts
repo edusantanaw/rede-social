@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 
 const token = localStorage.getItem("@App:token");
 
-export  function useApi(url: string) {
+export  function useApi(url: string, dependence?: string) {
   const [data, setData] = useState<any>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string>("");
@@ -24,7 +24,7 @@ export  function useApi(url: string) {
       .finally(() => {
         setLoading(false);
       });
-  }, []);
+  }, [dependence]);
 
   return { data, loading, error };
 }

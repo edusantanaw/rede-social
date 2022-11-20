@@ -67,6 +67,8 @@ const Container = styled.div`
   top: 0;
   left: 15%;
   padding: 3em 2em;
+  border-right: 1px  solid #f4f4f45d;
+  box-shadow: inset 0em 0em 4em 0.1em #f0f0f12f;
   input {
     width: 100%;
     height: 2.5em;
@@ -94,6 +96,7 @@ const Container = styled.div`
       position: relative;
       img {
         width: 2em;
+        height: 2em;
         border-radius: 50%;
       }
     }

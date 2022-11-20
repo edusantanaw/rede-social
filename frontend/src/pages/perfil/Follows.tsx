@@ -84,6 +84,8 @@ const Container = styled.div<{ show: boolean }>`
       gap: 1em;
       img {
         width: 2.5em;
+        height: 2.5em;
+        object-fit: cover;
         border-radius: 50%;
       }
     }

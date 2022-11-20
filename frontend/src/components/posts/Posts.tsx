@@ -11,7 +11,7 @@ interface post {
 }
 const Posts = ({ url }: { url: string }) => {
   const { data } = useApi(url);
-  console.log(data);
+  console.log(url);
   return (
     <List>
       {data &&

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Container } from "./styles";
 import Follows from "./Follows";
@@ -10,6 +10,7 @@ import { MdPersonAdd } from "react-icons/md";
 import { RiUserFollowFill } from "react-icons/ri";
 import { useAppDispatch } from "../../store/store";
 import { addUserFollow } from "../../slices/userSlices";
+import { useApi } from "../../hooks/useApi";
 
 const user = JSON.parse(localStorage.getItem("App:user") || "{}");
 const token = localStorage.getItem("@App:token");
@@ -23,8 +24,8 @@ interface user {
 }
 
 const Perfil = () => {
-  const id: any = useParams();
-  const [data, setData] = useState<user | null>(null);
+  const userId = useParams<{ id: string }>();
+  const id = userId.id ? userId.id : ""
   const [following, setFollowing] = useState<user[]>([]);
   const [followers, setFollowers] = useState<user[]>([]);
   const [showFollowers, setShowFollowers] = useState(false);
@@ -32,39 +33,32 @@ const Perfil = () => {
   const [edit, setEdit] = useState(false);
   const [followersActual, setFollowersActual] = useState<boolean>(false);
   const dispatch = useAppDispatch();
+  const { data } = useApi(`/users/perfil/${id}`);
+ 
 
   useEffect(() => {
-    Api.get(`/users/perfil/${id.id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }).then((response) => {
-      console.log(response);
-      setData(response.data);
-    });
-
-    Api.get(`/users/followers/${id.id}`, {
+    Api.get(`/users/followers/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     }).then((response) => {
       const users = response.data;
       const verifyAlreadyFollowing = users.filter(
-        (userID: user) => userID.email === user.id
+        (userID: user) => userID.id === user.id
       );
       setFollowers(users);
       if (verifyAlreadyFollowing.length > 0) setFollowersActual(true);
-    });
+    }).catch((error)=> console.log(error))
 
-    Api.get(`/users/following/${id.id}`, {
+    Api.get(`/users/following/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     }).then((response) => {
       const users = response.data;
       setFollowing(users);
-    });
-  }, [id]);
+    })
+  }, [data]);
 
   function handleModal() {
     showFollowers ? setShowFollowers(false) : setShowFollowers(true);
@@ -80,12 +74,12 @@ const Perfil = () => {
   }
 
   async function handleAddFollow() {
-    await dispatch(addUserFollow(id.id));
+    await dispatch(addUserFollow(id));
   }
 
   return (
     <Container>
-      {edit && <EditModal handleEdit={handleEdit} id={id.id} />}
+      {edit && <EditModal handleEdit={handleEdit} id={id} />}
       <Follows
         data={following}
         handleModal={handleModal}
@@ -100,7 +94,7 @@ const Perfil = () => {
       />
       <div className="header">
         <img
-          src={`http://localhost:5001/users/${data?.perfilPhoto}`}
+          src={`http://localhost:5001/users/${data?.perfilPhoto        }`}
           alt="user photo"
         />
         <div className="right">
@@ -109,7 +103,7 @@ const Perfil = () => {
             {user.id === data?.id && (
               <button onClick={() => handleEdit()}>Editar perfil</button>
             )}
-            {user.id !== id.id &&
+            {user.id !== id &&
               (followersActual ? (
                 <RiUserFollowFill />
               ) : (
@@ -131,7 +125,7 @@ const Perfil = () => {
           <p>{data?.bio}</p>
         </div>
       </div>
-      <Posts id={id.id} />
+      <Posts id={id} />
     </Container>
   );
 };

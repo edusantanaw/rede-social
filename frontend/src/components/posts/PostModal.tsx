@@ -131,7 +131,7 @@ const Modal = styled.div`
     border: 1px solid #a0a0a0;
     border-radius: 10px;
     padding: 1em;
-    max-height: 35em;
+    height: 35em;
     gap: 2em;
     img {
       object-fit: cover;

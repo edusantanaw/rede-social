@@ -4,7 +4,7 @@ import NewPostModal from "../../components/newPost/NewPostModal";
 import Posts from "../../components/posts/Posts";
 import NewPost from "../../components/newPost/newPost";
 
-
+const user = JSON.parse(localStorage.getItem('App:user')|| "{}" )
 const Home = () => {
 
   const [newPostModal, setNewPost] = useState(false)
@@ -17,7 +17,7 @@ const Home = () => {
     <Container>
       {newPostModal && <NewPostModal handleModal = {showModal} />}
       <NewPost handleModal= {showModal} />
-      <Posts url={`/posts/feed/c24eecc2-e785-4f48-b5db-b583a5cb71cc`} />
+      <Posts url={`/posts/feed/${user.id}`} />
     </Container>
   );
 };

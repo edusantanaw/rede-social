@@ -8,6 +8,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../store/store";
 import { userLogout } from "../../slices/userSlices";
 import Search from "./Search";
+import Follows from "./Follows";
 
 const user = JSON.parse(localStorage.getItem("App:user") || "{}");
 const Nav = () => {
@@ -16,6 +17,7 @@ const Nav = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [showSearch, setShowSearch] = useState(false);
+  const [showFollow, setShowFollow] = useState(false);
 
   async function handleLogout() {
     await dispatch(userLogout());
@@ -25,6 +27,10 @@ const Nav = () => {
   function handleShowSearch() {
     showSearch ? setShowSearch(false) : setShowSearch(true);
   }
+  console.log(showFollow);
+  function handleShowFollow() {
+    showFollow ? setShowFollow(false) : setShowFollow(true);
+  }
   return (
     <>
       <HeaderContainer>
@@ -33,6 +39,7 @@ const Nav = () => {
           <li
             onClick={() => {
               showSearch ? setShowSearch(false) : "";
+              showFollow ? setShowFollow(false) : "";
             }}
           >
             <Link to="/">
@@ -43,6 +50,7 @@ const Nav = () => {
           <li
             onClick={() => {
               showSearch ? setShowSearch(false) : "";
+              showFollow ? setShowFollow(false) : "";
             }}
           >
             <BiMessageSquare />
@@ -51,6 +59,7 @@ const Nav = () => {
           <li
             onClick={() => {
               showSearch ? setShowSearch(false) : "";
+              handleShowFollow();
             }}
           >
             <FaUserFriends />
@@ -59,6 +68,7 @@ const Nav = () => {
           <li
             onClick={() => {
               showSearch ? setShowSearch(false) : "";
+              showFollow ? setShowFollow(false) : "";
             }}
           >
             <IoNotifications />
@@ -67,6 +77,7 @@ const Nav = () => {
           <li
             onClick={() => {
               showSearch ? setShowSearch(false) : "";
+              showFollow ? setShowFollow(false) : "";
             }}
           >
             <Link to={`/perfil/${user.id}`}>
@@ -77,13 +88,19 @@ const Nav = () => {
               <span>Perfil</span>
             </Link>
           </li>
-          <li onClick={handleShowSearch}>
+          <li
+            onClick={() => {
+              handleShowSearch();
+              showFollow ? setShowFollow(false) : "";
+            }}
+          >
             <BiSearchAlt2 />
             <span>Search</span>
           </li>
           <li
             onClick={() => {
               showSearch ? setShowSearch(false) : "";
+              showFollow ? setShowFollow(false) : "";
               handleLogout();
             }}
           >
@@ -93,6 +110,7 @@ const Nav = () => {
         </ul>
       </HeaderContainer>
       {showSearch && <Search />}
+      {showFollow && <Follows />}
     </>
   );
 };
