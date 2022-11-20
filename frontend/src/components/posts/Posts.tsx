@@ -55,6 +55,7 @@ const List = styled.ul`
       border-radius: 10px;
       max-height: 40em;
       object-fit: cover;
+      cursor: pointer;
     }
   }
   .interactions {

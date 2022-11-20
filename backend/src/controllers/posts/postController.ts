@@ -210,7 +210,7 @@ export class PostController {
   async addComment(req: Request, res: Response) {
     const id = req.params.id;
     const { comment } = req.body;
-    console.log(comment)
+
     const userToken = await tokenPorvider.getUserByToken(req);
     if (!userToken) return res.status(400).json({ error: "User not found!" });
     try {
@@ -246,7 +246,6 @@ export class PostController {
       inner join users on users.id = comments."authorId"
       where comments."postId"= ${id}
     `;
-      console.log(postComments);
       if (postComments.length === 0) throw "This post not have comments!";
       res.status(200).json(postComments);
     } catch (error) {

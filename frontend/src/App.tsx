@@ -12,8 +12,12 @@ import Nav from "./layout/nav/Nav";
 import { Chat } from "./layout/chat/Chat";
 import Perfil from "./pages/perfil/Perfil";
 
+
+
+
 function App() {
   const { isAuth } = useAuth();
+ 
 
   return (
     <Router>

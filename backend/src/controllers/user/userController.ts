@@ -24,7 +24,6 @@ export class UserController {
         id: id,
       },
     });
-    console.log(userReq);
     if (!userReq) res.status(400).json({ error: "User not found!" });
 
     res.status(200).json(userReq);
@@ -136,7 +135,6 @@ export class UserController {
   async addFollow(req: Request, res: Response) {
     // follower user
     const id = req.params.id;
-    console.log(id);
     // user token
     const userByToken = await tokenPorvider.getUserByToken(req);
 
@@ -152,7 +150,6 @@ export class UserController {
       if (!findUser) throw "User not found";
       if (!findUser.name) throw "User not found!";
 
-      console.log(userByToken);
       await follows.create({
         data: {
           followerId: findUser.id,

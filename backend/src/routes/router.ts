@@ -4,10 +4,12 @@ import { PostController } from "../controllers/posts/postController";
 import { verifyTokenExists } from "../middlewares/verifyToken";
 import { uploadImages } from "../middlewares/multer";
 import { UserController } from "../controllers/user/userController";
+import ChatMessage from "../controllers/chat/chatController";
 
 const authController = new AuthController();
 const postController = new PostController();
 const userController = new UserController();
+const messageController = new ChatMessage()
 
 const router = Router();
 
@@ -44,6 +46,10 @@ router.patch(
   verifyTokenExists,
   userController.updatePassword
 );
+
+//messages
+router.get("/messages", verifyTokenExists, messageController.getAllMessage)
+
 
 //posts routes
 router.get("/posts", verifyTokenExists, postController.getAllPosts);

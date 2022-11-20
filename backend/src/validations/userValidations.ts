@@ -60,7 +60,6 @@ export async function validate(value: string, type: string): Promise<void> {
   }
 
   if (res) return;
-  
-    throw  `${type} is invalid`;
- 
+
+  throw `${type} is invalid`;
 }

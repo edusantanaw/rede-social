@@ -7,7 +7,7 @@ export const Container = styled.section`
     display: flex;
     align-items: center;
     flex-direction: column;
-
+    padding-left: 7em;
     .header{
         display: flex;
         align-items: center;
