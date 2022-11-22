@@ -10,6 +10,7 @@ import useAuth from "./hooks/useAuth";
 import Auth from "./pages/auth/Auth";
 import Nav from "./layout/nav/Nav";
 import Perfil from "./pages/perfil/Perfil";
+import { Main } from "./pages/perfil/Main";
 
 
 
@@ -30,7 +31,7 @@ function App() {
         />
         <Route
           path="/perfil/:id"
-          element={isAuth ? <Perfil /> : <Navigate to="/auth" />}
+          element={isAuth ? <Main /> : <Navigate to="/auth" />}
         />
       </Routes>
     </Router>

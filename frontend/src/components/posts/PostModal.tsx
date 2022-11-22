@@ -125,13 +125,15 @@ const Modal = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 10;
+  z-index: 20;
+  opacity: 0;
+  animation: animate 0.7s 0.2s ease-in-out forwards;
   .close {
     background-color: #00000063;
     z-index: 1;
     position: absolute;
     width: 100%;
-    height: 100vh;
+    height: 200vh;
   }
   .post {
     z-index: 5;
@@ -140,10 +142,13 @@ const Modal = styled.div`
     border: 1px solid #a0a0a0;
     border-radius: 10px;
     padding: 1em;
+    max-width: 80%; 
     height: 35em;
     gap: 2em;
     img {
       object-fit: cover;
+      max-width: 50%;
+      border-radius: 10px;
     }
     .right {
       padding: 1em;

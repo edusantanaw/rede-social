@@ -153,6 +153,10 @@ export class PostController {
 
   async getPostByUser(req: Request, res: Response) {
     const userId = req.params.id;
+    const { start, limit } = req.query;
+
+    const startToNumber = Number(start);
+    const endToNumber = Number(limit);
 
     try {
       if (!userId) throw "Id invalid";
@@ -160,7 +164,8 @@ export class PostController {
       select users.name, users.id, users."perfilPhoto", posts.id, posts.content, posts.image from posts 
       inner join users on users.id = posts."authorId"
       where users.id = ${userId}
-      order by posts."createdAt" desc;
+      order by posts."createdAt" desc
+      Limit ${endToNumber} offset ${startToNumber} 
     `;
       if (posts.length === 0) throw "No any post found";
 
@@ -173,11 +178,11 @@ export class PostController {
   // get all posts from users I'm following
   async myFeed(req: Request, res: Response) {
     const id = req.params.id;
-    const { start, end } = req.query;
+    const { start, limit } = req.query;
 
     const startToNumber = Number(start);
-    const endToNumber = Number(end);
-
+    const endToNumber = Number(limit);
+    console.log(start, limit);
     try {
       if (!id) throw "User invalid!";
       const posts: string[] = await client.$queryRaw`
@@ -186,7 +191,7 @@ export class PostController {
       inner join users on users.id  = posts."authorId"
       where "Follows"."followingId" = ${id} OR posts."authorId" = ${id}
       order by posts."createdAt" desc
-      Limit ${endToNumber} OFFSET ${startToNumber} 
+      Limit ${endToNumber} offset ${startToNumber} 
         `;
       if (posts.length === 0) throw "Posts not found!";
       res.status(200).json(posts);

@@ -42,9 +42,9 @@ const Nav = () => {
         <ul>
           <li
             onClick={() => {
-              showSearch && setShowSearch(false) ;
-              showFollow && setShowFollow(false) ;
-              showMessages && setShowMessages(false)
+              showSearch && setShowSearch(false);
+              showFollow && setShowFollow(false);
+              showMessages && setShowMessages(false);
             }}
           >
             <Link to="/">
@@ -65,7 +65,7 @@ const Nav = () => {
           <li
             onClick={() => {
               showSearch ? setShowSearch(false) : "";
-              showMessages && setShowMessages(false)
+              showMessages && setShowMessages(false);
               handleShowFollow();
             }}
           >
@@ -74,9 +74,9 @@ const Nav = () => {
           </li>
           <li
             onClick={() => {
-              showSearch && setShowSearch(false) ;
-              showFollow && setShowFollow(false) ;
-              showMessages && setShowMessages(false)
+              showSearch && setShowSearch(false);
+              showFollow && setShowFollow(false);
+              showMessages && setShowMessages(false);
             }}
           >
             <Link to={`/perfil/${user.id}`}>
@@ -90,7 +90,9 @@ const Nav = () => {
           <li
             onClick={() => {
               handleShowSearch();
-              showFollow ? setShowFollow(false) : "";
+              showFollow && setShowFollow(false);
+              showMessages && setShowMessages(false)
+              showSearch && setShowSearch(false);
             }}
           >
             <BiSearchAlt2 />
@@ -98,8 +100,9 @@ const Nav = () => {
           </li>
           <li
             onClick={() => {
-              showSearch ? setShowSearch(false) : "";
-              showFollow ? setShowFollow(false) : "";
+              showSearch && setShowSearch(false);
+              showFollow && setShowFollow(false);
+              showMessages && setShowMessages(false);
               handleLogout();
             }}
           >

@@ -14,7 +14,6 @@ interface post {
   perfilPhoto?: string;
 }
 
-
 interface like {
   id: string;
   userId: string;
@@ -53,30 +52,32 @@ export const Post = ({ post, key }: { post: post; key: number }) => {
   }
 
   return (
-    <li key={key} onClick={() => setModalId(post.id)}>
+    <>
       {showModal && <PostModal id={modalId} handleModal={handleModal} />}
-      <div className="header_post">
-        <img
-          src={`http://localhost:5001/users/${post.perfilPhoto}`}
-          alt="user photo"
-        />
-        <h3>{post.name}</h3>
-      </div>
-      <p>{post?.content}</p>
-      {post.image && (
-        <img
-          src={`http://localhost:5001/posts/${post.image}`}
-          alt="post image"
-          onClick={handleModal}
-        />
-      )}
-      <div className="interactions">
-        <AiFillHeart
-          onClick={() => handleLike()}
-          className={liked ? "marked" : ""}
-        />
-        <FiMessageSquare onClick={() => handleModal()} />
-      </div>
-    </li>
+      <li key={key} onClick={() => setModalId(post.id)}>
+        <div className="header_post">
+          <img
+            src={`http://localhost:5001/users/${post.perfilPhoto}`}
+            alt="user photo"
+          />
+          <h3>{post.name}</h3>
+        </div>
+        <p>{post?.content}</p>
+        {post.image && (
+          <img
+            src={`http://localhost:5001/posts/${post.image}`}
+            alt="post image"
+            onClick={handleModal}
+          />
+        )}
+        <div className="interactions">
+          <AiFillHeart
+            onClick={() => handleLike()}
+            className={liked ? "marked" : ""}
+          />
+          <FiMessageSquare onClick={() => handleModal()} />
+        </div>
+      </li>
+    </>
   );
 };

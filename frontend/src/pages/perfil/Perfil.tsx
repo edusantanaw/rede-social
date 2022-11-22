@@ -10,7 +10,7 @@ import { MdPersonAdd } from "react-icons/md";
 import { RiUserFollowFill } from "react-icons/ri";
 import { useAppDispatch } from "../../store/store";
 import { addUserFollow } from "../../slices/userSlices";
-import { useApi } from "../../hooks/useApi";
+
 
 const user = JSON.parse(localStorage.getItem("App:user") || "{}");
 const token = localStorage.getItem("@App:token");
@@ -23,9 +23,7 @@ interface user {
   bio: string | null;
 }
 
-const Perfil = () => {
-  const userId = useParams<{ id: string }>();
-  const id = userId.id ? userId.id : ""
+const Perfil = ({data}: {data: user}) => {
   const [following, setFollowing] = useState<user[]>([]);
   const [followers, setFollowers] = useState<user[]>([]);
   const [showFollowers, setShowFollowers] = useState(false);
@@ -33,11 +31,11 @@ const Perfil = () => {
   const [edit, setEdit] = useState(false);
   const [followersActual, setFollowersActual] = useState<boolean>(false);
   const dispatch = useAppDispatch();
-  const { data } = useApi(`/users/perfil/${id}`);
+
  
 
   useEffect(() => {
-    Api.get(`/users/followers/${id}`, {
+    Api.get(`/users/followers/${data.id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -50,7 +48,7 @@ const Perfil = () => {
       if (verifyAlreadyFollowing.length > 0) setFollowersActual(true);
     }).catch((error)=> console.log(error))
 
-    Api.get(`/users/following/${id}`, {
+    Api.get(`/users/following/${data.id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -74,12 +72,14 @@ const Perfil = () => {
   }
 
   async function handleAddFollow() {
-    await dispatch(addUserFollow(id));
+    await dispatch(addUserFollow(data.id));
   }
+
+
 
   return (
     <Container>
-      {edit && <EditModal handleEdit={handleEdit} id={id} />}
+      {edit && <EditModal handleEdit={handleEdit} id={data.id} />}
       <Follows
         data={following}
         handleModal={handleModal}
@@ -103,7 +103,7 @@ const Perfil = () => {
             {user.id === data?.id && (
               <button onClick={() => handleEdit()}>Editar perfil</button>
             )}
-            {user.id !== id &&
+            {user.id !== data.id &&
               (followersActual ? (
                 <RiUserFollowFill />
               ) : (
@@ -125,7 +125,7 @@ const Perfil = () => {
           <p>{data?.bio}</p>
         </div>
       </div>
-      <Posts id={id} />
+      <Posts id={data.id} depence= {data.id}/>
     </Container>
   );
 };

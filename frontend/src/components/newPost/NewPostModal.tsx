@@ -62,6 +62,7 @@ const Modal = styled.div`
   display: flex;
   justify-content: center;
   z-index: 2;
+  
   .close {
     width: 100%;
     height: 100vh;
