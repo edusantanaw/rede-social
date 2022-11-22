@@ -3,7 +3,7 @@ import socket from "socket.io";
 import express from "express";
 import cors from "cors";
 import router from "../routes/router";
-import { message, socketId } from "../prisma/client";
+import { message, room } from "../prisma/client";
 export const app = express();
 app.use(cors({ credentials: true, origin: " http://127.0.0.1:5173" }));
 app.use(express.urlencoded({ extended: true }));
@@ -22,43 +22,28 @@ export const io = new socket.Server(httpServer, {
 });
 
 io.on("connect", (socket) => {
-  const newSocketId = socket.id;
 
   socket.on("disconnect", () => {
     console.log(`User desconnected ${socket.id}`);
   });
-  socket.on("user", async (data) => {
+  socket.on("join_room", async (data) => {
     console.log(data);
-    const verify = await socketId.findFirst({
+    const roomUser = await room.findFirst({
       where: {
-        userId: data.id,
+        OR: [
+          {
+            userId: data.userId,
+            userRecId: data.followerId,
+          },
+          {
+            userId: data.followerId,
+            userRecId: data.userId,
+          },
+        ],
       },
     });
-    if (verify) {
-      await socketId.update({
-        where: {
-          userId: data.id,
-        },
-        data: {
-          socketId: newSocketId,
-        },
-      });
-    } else {
-      await socketId.create({
-        data: {
-          userId: data.id,
-          socketId: newSocketId,
-        },
-      });
-    }
-  });
-
-  socket.on("create_room", (data) => {
-    console.log(data)
-    socket.join([
-      `${data.userId}${data.followerId}`,
-      `${data.followerId}${data.followerId}`,
-    ]);
+    const id = roomUser?.id;
+    if (id) socket.join(id);
   });
 
   socket.on("send_message", async (data) => {
@@ -66,10 +51,10 @@ io.on("connect", (socket) => {
     await message.create({
       data: {
         message: data.message,
-        userSend: data.sender,
-        userRec: data.to,
+        userSend: data.userSend,
+        userRec: data.to
       },
     });
-    socket.to(data.room).emit("receive_message", data.message);
+    socket.to(data.room).emit("receive_message", data);
   });
 });

@@ -9,7 +9,6 @@ import Home from "./pages/home/Home";
 import useAuth from "./hooks/useAuth";
 import Auth from "./pages/auth/Auth";
 import Nav from "./layout/nav/Nav";
-import { Chat } from "./layout/chat/Chat";
 import Perfil from "./pages/perfil/Perfil";
 
 
@@ -34,7 +33,6 @@ function App() {
           element={isAuth ? <Perfil /> : <Navigate to="/auth" />}
         />
       </Routes>
-      {isAuth && <Chat />}
     </Router>
   );
 }

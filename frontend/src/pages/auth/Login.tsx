@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import * as yup from "yup";
 import { FieldValues, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useSelector } from "react-redux";
 import { selectUser, userAuth } from "../../slices/userSlices";
 import { useAppDispatch } from "../../store/store";
-import React from "react";
 
 const loginForm = yup.object().shape({
   email: yup.string().required("Email is required!").email(),
@@ -50,7 +48,7 @@ const Login = ({ handleChange }: props) => {
   } = useForm({ resolver: yupResolver(loginForm) });
 
   return (
-    <form onSubmit={handleSubmit(handleLogin)}>
+    <form onSubmit={handleSubmit(handleLogin)} onKeyPress={(e)=> e.key === "Enter"&& handleSubmit(handleLogin)}>
       <h1>Sign in</h1>
       <div>
         <label htmlFor="email">Email</label>
@@ -74,7 +72,7 @@ const Login = ({ handleChange }: props) => {
           {errors?.password && <>{errors.password.message} </>}
         </p>
       </div>
-      <input type="submit" />
+      <input type="submit"  />
       {loginError.length > 0 && <span id="error">{loginError}</span>}
       <p>
         Don't have an account?<span onClick={handleChange}> Sign up</span>

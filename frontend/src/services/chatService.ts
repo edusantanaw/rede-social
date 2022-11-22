@@ -6,21 +6,22 @@ const user = JSON.parse(localStorage.getItem("App:user") || "{}");
 socket.connect();
 socket.emit("user", user);
 
-
-export function joinRoom(userId: string, followerId: string) {
+export function joinRoom(userId: string | null, followerId: string | null) {
   if (userId && followerId) {
-    socket.emit("create_room", { userId, followerId });
+    socket.emit("join_room", { userId, followerId });
   }
 }
 
 export function sendMessage(data: {
   message: string;
-  sender: string;
+  userSend: string;
   to: string;
-  room: string
+  room: string;
 }) {
     console.log(data)
   if (data) {
     socket.emit("send_message", data);
   }
 }
+
+  export default socket

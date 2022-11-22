@@ -7,8 +7,9 @@ import { HiHome } from "react-icons/hi";
 import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../store/store";
 import { userLogout } from "../../slices/userSlices";
-import Search from "./Search";
-import Follows from "./Follows";
+import Search from "./components/Search";
+import Follows from "./components/Follows";
+import Messages from "./components/Messages";
 
 const user = JSON.parse(localStorage.getItem("App:user") || "{}");
 const Nav = () => {
@@ -18,6 +19,7 @@ const Nav = () => {
   const navigate = useNavigate();
   const [showSearch, setShowSearch] = useState(false);
   const [showFollow, setShowFollow] = useState(false);
+  const [showMessages, setShowMessages] = useState(false);
 
   async function handleLogout() {
     await dispatch(userLogout());
@@ -27,9 +29,11 @@ const Nav = () => {
   function handleShowSearch() {
     showSearch ? setShowSearch(false) : setShowSearch(true);
   }
-  console.log(showFollow);
   function handleShowFollow() {
     showFollow ? setShowFollow(false) : setShowFollow(true);
+  }
+  function handleShowMessage() {
+    showMessages ? setShowMessages(false) : setShowMessages(true);
   }
   return (
     <>
@@ -38,8 +42,9 @@ const Nav = () => {
         <ul>
           <li
             onClick={() => {
-              showSearch ? setShowSearch(false) : "";
-              showFollow ? setShowFollow(false) : "";
+              showSearch && setShowSearch(false) ;
+              showFollow && setShowFollow(false) ;
+              showMessages && setShowMessages(false)
             }}
           >
             <Link to="/">
@@ -51,6 +56,7 @@ const Nav = () => {
             onClick={() => {
               showSearch ? setShowSearch(false) : "";
               showFollow ? setShowFollow(false) : "";
+              handleShowMessage();
             }}
           >
             <BiMessageSquare />
@@ -59,6 +65,7 @@ const Nav = () => {
           <li
             onClick={() => {
               showSearch ? setShowSearch(false) : "";
+              showMessages && setShowMessages(false)
               handleShowFollow();
             }}
           >
@@ -67,17 +74,9 @@ const Nav = () => {
           </li>
           <li
             onClick={() => {
-              showSearch ? setShowSearch(false) : "";
-              showFollow ? setShowFollow(false) : "";
-            }}
-          >
-            <IoNotifications />
-            <span>Notifications</span>
-          </li>
-          <li
-            onClick={() => {
-              showSearch ? setShowSearch(false) : "";
-              showFollow ? setShowFollow(false) : "";
+              showSearch && setShowSearch(false) ;
+              showFollow && setShowFollow(false) ;
+              showMessages && setShowMessages(false)
             }}
           >
             <Link to={`/perfil/${user.id}`}>
@@ -111,6 +110,7 @@ const Nav = () => {
       </HeaderContainer>
       {showSearch && <Search />}
       {showFollow && <Follows />}
+      {showMessages && <Messages />}
     </>
   );
 };

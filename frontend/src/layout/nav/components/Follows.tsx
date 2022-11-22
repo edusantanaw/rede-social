@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { useApi } from "../../hooks/useApi";
-import { Api } from "../../utils/api";
+import { useApi } from "../../../hooks/useApi";
+import { Api } from "../../../utils/api";
 
 interface user {
   id: string;

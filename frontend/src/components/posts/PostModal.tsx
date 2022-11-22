@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { useApi } from "../../hooks/useApi";
 import { addNewComment } from "../../slices/postSlices";
+import { userAuth } from "../../slices/userSlices";
 import { useAppDispatch } from "../../store/store";
 import { Api } from "../../utils/api";
 import Comment from "./Comment";
@@ -24,6 +25,7 @@ interface comment {
 }
 
 const token = localStorage.getItem("@App:token");
+const user = JSON.parse(localStorage.getItem("App:user") || "{}");
 
 const PostModal = ({
   id,
@@ -44,7 +46,14 @@ const PostModal = ({
         comment: comment.current.value,
         id: id,
       };
-
+      const newComment = {
+        name: user.name,
+        perfilPhoto: user.perfilPhoto,
+        content: comment.current.value,
+        user: user,
+        id: user.id,
+      };
+      setComments((list) => [...list, newComment]);
       await dispatch(addNewComment(data));
     }
   }
@@ -89,9 +98,9 @@ const PostModal = ({
                 <p>{post.content}</p>
                 <ul>
                   {comments &&
-                    comments.map((comment, i: number) =>(
-                      <Comment comment={comment} key= {i} />
-                     ))}
+                    comments.map((comment, i: number) => (
+                      <Comment comment={comment} key={i} />
+                    ))}
                 </ul>
                 <div className="new_comment">
                   <input type="text" placeholder="example..." ref={comment} />
@@ -180,26 +189,26 @@ const Modal = styled.div`
         }
       }
     }
-    ul{
-     overflow-y: auto;
-     display: flex;
-     flex-direction: column; 
-     gap: 0.5em;
-     height: 75%;
+    ul {
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5em;
+      height: 75%;
 
-     scroll-behavior:smooth;
-     scrollbar-width: 1px;
+      scroll-behavior: smooth;
+      scrollbar-width: 1px;
 
-     &::-webkit-scrollbar{
-      width: 0.5em;
-      background-color: #272525;
-      border-radius: 4px;
-     }
+      &::-webkit-scrollbar {
+        width: 0.5em;
+        background-color: #272525;
+        border-radius: 4px;
+      }
 
-     &::-webkit-scrollbar-thumb{
-      background-color: #fff;
-      border-radius: 4px;
-     }
+      &::-webkit-scrollbar-thumb {
+        background-color: #fff;
+        border-radius: 4px;
+      }
     }
   }
 `;

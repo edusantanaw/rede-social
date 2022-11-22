@@ -25,9 +25,10 @@ model User {
   refreshToken RefreshToken?
   followers    Follows[]     @relation("follower")
   following    Follows[]     @relation("following")
-  socketId     socketId?
   message      message[]     @relation("sender")
   messageRec   message[]     @relation("receptor")
+  Room         Room[]        @relation("sender")
+  RoomRec      Room[]        @relation("receptor")
 
   @@index([email])
   @@map("users")
@@ -86,18 +87,21 @@ model RefreshToken {
   @@map("refresh_token")
 }
 
-model socketId {
-  id       String @id @default(uuid())
-  user     User   @relation(fields: [userId], references: [id])
-  userId   String @unique
-  socketId String
+model Room {
+  id        String @id @default(uuid())
+  user      User   @relation("sender", fields: [userId], references: [id])
+  userId    String
+  userRec   User   @relation("receptor", fields: [userRecId], references: [id])
+  userRecId String
+
+  @@map("room")
 }
 
 model message {
   id        String   @id @default(uuid())
   user      User     @relation("sender", fields: [userSend], references: [id])
   message   String
-  userSend  String   
+  userSend  String
   to        User     @relation("receptor", fields: [userRec], references: [id])
   userRec   String
   createdAt DateTime @default(now())

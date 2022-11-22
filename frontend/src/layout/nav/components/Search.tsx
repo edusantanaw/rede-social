@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { Api } from "../../utils/api";
+import { Api } from "../../../utils/api";
 
 const token = localStorage.getItem("@App:token");
 

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { validate } from "../../validations/userValidations";
-import { user, client, follows } from "../../prisma/client";
+import { user, client, follows, room } from "../../prisma/client";
 import bcrypt from "bcrypt";
 import { Token } from "../../provider/accessToken";
 
@@ -149,6 +149,7 @@ export class UserController {
       });
       if (!findUser) throw "User not found";
       if (!findUser.name) throw "User not found!";
+      
 
       await follows.create({
         data: {
@@ -156,6 +157,19 @@ export class UserController {
           followingId: userByToken.id,
         },
       });
+      const verifyRoom =  await room.findFirst({
+        where: {
+          userRecId: userByToken.id
+        }
+      })
+      if(!verifyRoom){
+        await room.create({
+          data: {
+            userId: userByToken.id,
+            userRecId: findUser.id
+          }
+        })
+      }
       res.status(200).json("Following with success!");
     } catch (error) {
       res.status(400).json({ error: error });

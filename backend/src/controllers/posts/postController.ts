@@ -184,7 +184,7 @@ export class PostController {
       select "authorId", name, posts.id, "perfilPhoto", image, content  from posts
       inner join "Follows" on  "Follows"."followerId" = posts."authorId"
       inner join users on users.id  = posts."authorId"
-      where "Follows"."followingId" = ${id}
+      where "Follows"."followingId" = ${id} OR posts."authorId" = ${id}
       order by posts."createdAt" desc
       Limit ${endToNumber} OFFSET ${startToNumber} 
         `;

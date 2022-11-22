@@ -2,11 +2,15 @@ import styled from "styled-components";
 import { useAppDispatch } from "../../store/store";
 import { newPost as create } from "../../slices/postSlices";
 import React, { useRef, useState } from "react";
+import {useNavigate} from 'react-router-dom'
 
+
+const user = JSON.parse(localStorage.getItem("App:user") || "{}");
 const NewPost = ({ handleModal }: { handleModal: () => void }) => {
   const dispatch = useAppDispatch();
   const content = useRef<HTMLTextAreaElement | null>(null);
   const [image, setImage] = useState<File | string>("");
+  const navigate = useNavigate()
 
   const handleImage = (e: React.FormEvent<HTMLInputElement>) => {
     const img = (e.target as HTMLInputElement).files;
@@ -23,6 +27,7 @@ const NewPost = ({ handleModal }: { handleModal: () => void }) => {
       formData.append('url', "/posts")
 
       await dispatch(create(formData));
+      navigate(`/perfil/${user.id}`)
       handleModal();
     }
   }

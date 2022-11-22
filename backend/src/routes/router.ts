@@ -47,8 +47,9 @@ router.patch(
   userController.updatePassword
 );
 
-//messages
+// chat
 router.get("/messages", verifyTokenExists, messageController.getAllMessage)
+router.get("/room", verifyTokenExists, messageController.getUsersRoom)
 
 
 //posts routes
