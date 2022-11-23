@@ -1,7 +1,8 @@
-import { useState } from "react";
-import styled from "styled-components";
+import { useEffect, useState } from "react";
 import { useApi } from "../../../hooks/useApi";
 import { joinRoom } from "../../../services/chatService";
+import { Api } from "../../../utils/api";
+import { Container } from "./styles/messages";
 import UserChat from "./UserCha";
 
 interface user {
@@ -10,14 +11,28 @@ interface user {
   perfilPhoto: string;
 }
 const user = JSON.parse(localStorage.getItem("App:user") || "{}");
+const toke = localStorage.getItem("@App:token");
 
 const Messages = () => {
   const { data } = useApi(`/users/following/${user.id}`);
   const [newChat, setNewChat] = useState(false);
   const [userId, setUserId] = useState<string | null>("");
   const [userChat, setUserChat] = useState<user | null>(null);
+  const [chats, setChats] = useState<user[]>([]);
 
- const closeChat = async () => {
+  useEffect(() => {
+    Api.get(`/messages/${user.id}`, {
+      headers: {
+        Authorization: `Bearer ${toke}`,
+      },
+    }).then((response) => {
+      const chats = response.data
+      setChats(chats)
+        console.log(response)
+        });
+  }, []);
+
+  const closeChat = async () => {
     setNewChat(false);
     await joinRoom(null, null);
     await setUserId(null);
@@ -38,6 +53,32 @@ const Messages = () => {
         />
       )}
       <div>
+        <h2>Chats</h2>
+        <ul>
+          {chats ? (
+            chats.map((userId: user, i: number) => (
+              <li
+                key={i}
+                onClick={async () => {
+                  newChat && (await closeChat());
+                  setNewChat(true);
+                  handleChat(userId.id);
+                  setUserChat(userId);
+                }}
+              >
+                <img
+                  src={`http://localhost:5001/users/${userId.perfilPhoto}`}
+                  alt="user photo"
+                />
+                <span>{userId.name}</span>
+              </li>
+            ))
+          ) : (
+            <span>Chats not found!</span>
+          )}
+        </ul>
+      </div>
+      <div>
         <h2>Users</h2>
         <ul>
           {data ? (
@@ -45,7 +86,7 @@ const Messages = () => {
               <li
                 key={i}
                 onClick={async () => {
-                  newChat && await closeChat() 
+                  newChat && (await closeChat());
                   setNewChat(true);
                   handleChat(userId.id);
                   setUserChat(userId);
@@ -69,40 +110,3 @@ const Messages = () => {
 
 export default Messages;
 
-const Container = styled.div`
-  background-color: #161515;
-  width: 13em;
-  height: 100vh;
-  position: fixed;
-  top: 0;
-  left: 15%;
-  padding: 3em 2em;
-  display: flex;
-  flex-direction: column;
-  gap: 3em;
-  box-shadow: inset 0em 0em 4em 0.1em #f0f0f12f;
-  border-right: 1px solid #f4f4f45d;
-  a {
-    text-decoration: none;
-    color: #fff;
-  }
-
-  ul {
-    margin-top: 1em;
-    display: flex;
-    flex-direction: column;
-    gap: 1em;
-    li {
-      list-style: none;
-      display: flex;
-      align-items: center;
-      gap: 0.5em;
-      position: relative;
-      img {
-        width: 2em;
-        height: 2em;
-        border-radius: 50%;
-      }
-    }
-  }
-`;

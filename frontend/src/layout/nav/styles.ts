@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const HeaderContainer = styled.header`
   padding: 3em 5em;
-  width: 15%;
+  width: 12.5em;;
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -47,4 +47,22 @@ export const HeaderContainer = styled.header`
       }
     }
   }
+
+ @media (max-width: 820px) {
+  width: 5em;
+  padding: 3em 4em;
+  h1{
+    font-size: 1.5em;
+  }
+      span{
+        display: none;
+      }
+ }
+
+ @media (max-width:680px ) {
+    padding: 3em 0.5em;
+    h1{
+      font-size: 1.2em; 
+    }
+ }
 `;

@@ -182,12 +182,11 @@ export class PostController {
 
     const startToNumber = Number(start);
     const endToNumber = Number(limit);
-    console.log(start, limit);
     try {
       if (!id) throw "User invalid!";
       const posts: string[] = await client.$queryRaw`
-      select "authorId", name, posts.id, "perfilPhoto", image, content  from posts
-      inner join "Follows" on  "Follows"."followerId" = posts."authorId"
+      select "authorId", name,  posts.id, "perfilPhoto", image, content  from posts
+      inner join "Follows" on  "Follows"."followingId" = posts."authorId"
       inner join users on users.id  = posts."authorId"
       where "Follows"."followingId" = ${id} OR posts."authorId" = ${id}
       order by posts."createdAt" desc

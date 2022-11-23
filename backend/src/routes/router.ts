@@ -49,6 +49,7 @@ router.patch(
 
 // chat
 router.get("/messages", verifyTokenExists, messageController.getAllMessage)
+router.get("/messages/:id", verifyTokenExists, messageController.getUserMessage)
 router.get("/room", verifyTokenExists, messageController.getUsersRoom)
 
 

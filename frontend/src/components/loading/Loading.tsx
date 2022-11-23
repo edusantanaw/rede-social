@@ -23,7 +23,7 @@ const Container = styled.div`
     border: 2px solid #ffffff72;
     border-top: 3px solid #f98c07;
     border-radius: 50%;
-    animation: is-rotating 1s cubic-bezier(0.86, 0, 0.07, 1) infinite;
+    animation: is-rotating 0.6s linear infinite;
     @keyframes is-rotating {
       to {
         transform: rotateZ(1turn);

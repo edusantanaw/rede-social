@@ -5,6 +5,7 @@ import { useApi } from "../../hooks/useApi";
 import { postlike } from "../../slices/postSlices";
 import { useAppDispatch } from "../../store/store";
 import PostModal from "./PostModal";
+import {Container} from './styles'
 
 interface post {
   content?: string;
@@ -49,12 +50,13 @@ export const Post = ({ post, key }: { post: post; key: number }) => {
 
   function handleModal() {
     showModal ? setShowModal(false) : setShowModal(true);
+   
   }
 
   return (
     <>
       {showModal && <PostModal id={modalId} handleModal={handleModal} />}
-      <li key={key} onClick={() => setModalId(post.id)}>
+      <Container key={key} onClick={() => setModalId(post.id)}>
         <div className="header_post">
           <img
             src={`http://localhost:5001/users/${post.perfilPhoto}`}
@@ -77,7 +79,7 @@ export const Post = ({ post, key }: { post: post; key: number }) => {
           />
           <FiMessageSquare onClick={() => handleModal()} />
         </div>
-      </li>
+      </Container>
     </>
   );
 };

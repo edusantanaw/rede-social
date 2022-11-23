@@ -84,6 +84,7 @@ const PostModal = ({
                 <img
                   src={`http://localhost:5001/posts/${post.image}`}
                   alt="post image"
+                  className="principal"
                 />
               )}
 
@@ -141,9 +142,9 @@ const Modal = styled.div`
     background-color: #000;
     border: 1px solid #a0a0a0;
     border-radius: 10px;
-    padding: 1em;
-    max-width: 80%; 
-    height: 35em;
+    padding: 2em;
+    max-width: 80%;
+    height: 38em;
     gap: 2em;
     img {
       object-fit: cover;
@@ -213,6 +214,48 @@ const Modal = styled.div`
       &::-webkit-scrollbar-thumb {
         background-color: #fff;
         border-radius: 4px;
+      }
+    }
+
+    @media (max-width: 1200px) {
+      max-width: 95%;
+    }
+
+    @media (max-width: 1000px) {
+      height: 34em;
+      gap: 1em;
+      img {
+        width: 40%;
+      }
+      .new_comment{
+        width: 90% !important;
+      }
+    }
+    @media (max-width: 800px){
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      max-width: 70%;
+      height: 96vh;
+      position: relative;
+
+      img{
+        object-fit: contain;
+      }
+      ul{
+        height: 70%;
+        width: 100%;
+      }
+      .new_comment{
+        bottom: 0em !important;
+      }
+    }
+    @media (max-width: 600px){
+      max-width: 90%;
+      height: 90vh;
+      gap: 0;
+      .right{
+        height: 100vh;
       }
     }
   }

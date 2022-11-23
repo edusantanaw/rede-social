@@ -26,6 +26,11 @@ export default Comment;
 
 const Container = styled.li`
   background-color: #1f1d1d5f !important;
+  padding: 0.6em;
+  border-radius: 7px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
   .header_comment {
     display: flex;
     align-items: center;
@@ -35,6 +40,12 @@ const Container = styled.li`
       height: 2em;
       object-fit: cover;
       border-radius: 50%;
+    }
+    @media (max-width: 1000px){
+      
+      img{
+        width: 2em !important;
+      }
     }
   }
 `;

@@ -105,4 +105,11 @@ export const Container = styled.section`
       color: red;
     }
   }
+
+  @media (max-width: 900px){
+    justify-content: center;
+    .logo{
+      display: none;
+    }
+  }
 `;

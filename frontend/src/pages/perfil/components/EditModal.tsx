@@ -1,12 +1,11 @@
 import React, { useRef, useState } from "react";
-import styled from "styled-components";
 import * as yup from "yup";
-import { useApi } from "../../hooks/useApi";
+import { useApi } from "../../../hooks/useApi";
 import { FieldValues, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useAppDispatch } from "../../store/store";
-import { userUpdate } from "../../slices/userSlices";
-import { EditContainer } from "./styles";
+import { useAppDispatch } from "../../../store/store";
+import { userUpdate } from "../../../slices/userSlices";
+import { EditContainer } from "./styles/edit";
 
 const loginForm = yup.object().shape({
   name: yup.string().min(5).max(15).required(),

@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import styled from "styled-components";
 import { Api } from "../../../utils/api";
+import { Container } from "./styles/search";
 
 const token = localStorage.getItem("@App:token");
 
@@ -59,46 +59,3 @@ const Search = () => {
 
 export default Search;
 
-const Container = styled.div`
-  background-color: #161515;
-  width: 22em;
-  height: 100vh;
-  position: fixed;
-  top: 0;
-  left: 15%;
-  padding: 3em 2em;
-  border-right: 1px  solid #f4f4f45d;
-  box-shadow: inset 0em 0em 4em 0.1em #f0f0f12f;
-  input {
-    width: 100%;
-    height: 2.5em;
-    border: none;
-    border-radius: 5px;
-    padding: 1em;
-  }
-
-
-  a{
-    text-decoration: none;
-    color: #fff;
-  }
-
-  ul {
-    margin-top: 1em;
-    display: flex;
-    flex-direction: column;
-    gap: 1em;
-    li {
-      list-style: none;
-      display: flex;
-      align-items: center;
-      gap: 0.5em;
-      position: relative;
-      img {
-        width: 2em;
-        height: 2em;
-        border-radius: 50%;
-      }
-    }
-  }
-`;

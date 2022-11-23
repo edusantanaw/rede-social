@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import styled from "styled-components";
 import { useApi } from "../../../hooks/useApi";
 import { Api } from "../../../utils/api";
+import { Container } from "./styles/follow";
 
 interface user {
   id: string;
@@ -76,40 +76,4 @@ const Follows = () => {
 
 export default Follows;
 
-const Container = styled.div`
-  background-color: #161515;
-  width: 13em;
-  height: 100vh;
-  position: fixed;
-  top: 0;
-  left: 15%;
-  padding: 3em 2em;
-  display: flex;
-  flex-direction: column;
-  gap: 3em;
-  box-shadow: inset 0em 0em 4em 0.1em #f0f0f12f;
-  border-right: 1px  solid #f4f4f45d;
-   a {
-    text-decoration: none;
-    color: #fff;
-  }
 
-  ul {
-    margin-top: 1em;
-    display: flex;
-    flex-direction: column;
-    gap: 1em;
-    li {
-      list-style: none;
-      display: flex;
-      align-items: center;
-      gap: 0.5em;
-      position: relative;
-      img {
-        width: 2em;
-        height: 2em;
-        border-radius: 50%;
-      }
-    }
-  }
-`;
