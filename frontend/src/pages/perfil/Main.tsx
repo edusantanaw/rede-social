@@ -4,8 +4,8 @@ import Loading from "../../components/loading/Loading";
 import { Api } from "../../utils/api";
 import Perfil from "./components/Perfil";
 
-const token = localStorage.getItem("@App:token");
 export const Main = () => {
+  const token = localStorage.getItem("@App:token");
   const { id } = useParams<{ id: string }>();
   const [response, setResponse] = useState<any>();
   const [loading, setLoading] = useState(true);

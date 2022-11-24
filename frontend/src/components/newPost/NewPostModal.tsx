@@ -6,8 +6,8 @@ import {useNavigate} from 'react-router-dom'
 import { Modal } from "./styles";
 
 
-const user = JSON.parse(localStorage.getItem("App:user") || "{}");
 const NewPost = ({ handleModal }: { handleModal: () => void }) => {
+  const user = JSON.parse(localStorage.getItem("App:user") || "{}");
   const dispatch = useAppDispatch();
   const content = useRef<HTMLTextAreaElement | null>(null);
   const [image, setImage] = useState<File | string>("");

@@ -6,6 +6,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useAppDispatch } from "../../../store/store";
 import { userUpdate } from "../../../slices/userSlices";
 import { EditContainer } from "./styles/edit";
+import Loading from "../../../components/loading/Loading";
 
 const loginForm = yup.object().shape({
   name: yup.string().min(5).max(15).required(),
@@ -19,7 +20,7 @@ const EditModal = ({
   handleEdit: () => void;
   id: string;
 }) => {
-  const { data } = useApi(`/users/perfil/${id}`);
+  const { data, loading } = useApi(`/users/perfil/${id}`);
   const bio = useRef<HTMLTextAreaElement | null>(null);
   const [image, setImage] = useState<File | string>("");
   const dispatch = useAppDispatch();
@@ -47,6 +48,7 @@ const EditModal = ({
     formState: { errors },
   } = useForm({ resolver: yupResolver(loginForm) });
 
+  if(loading) return <Loading />
   return (
     <EditContainer>
       <div className="close" onClick={handleEdit}></div>

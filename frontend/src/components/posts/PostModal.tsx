@@ -5,6 +5,7 @@ import { addNewComment } from "../../slices/postSlices";
 import { userAuth } from "../../slices/userSlices";
 import { useAppDispatch } from "../../store/store";
 import { Api } from "../../utils/api";
+import Loading from "../loading/Loading";
 import Comment from "./Comment";
 
 interface post {
@@ -73,6 +74,7 @@ const PostModal = ({
       });
   }, []);
 
+  if(loading) return <Loading />
   return (
     <Modal>
       <div onClick={handleModal} className="close"></div>
@@ -128,7 +130,7 @@ const Modal = styled.div`
   align-items: center;
   z-index: 20;
   opacity: 0;
-  animation: animate 0.7s 0.2s ease-in-out forwards;
+  animation: animate 0.4s 0.2s ease-in-out forwards;
   .close {
     background-color: #00000063;
     z-index: 1;

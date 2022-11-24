@@ -10,10 +10,10 @@ interface user {
   name: string;
   perfilPhoto: string;
 }
-const user = JSON.parse(localStorage.getItem("App:user") || "{}");
-const toke = localStorage.getItem("@App:token");
 
 const Messages = () => {
+  const user = JSON.parse(localStorage.getItem("App:user") || "{}");
+  const toke = localStorage.getItem("@App:token");
   const { data } = useApi(`/users/following/${user.id}`);
   const [newChat, setNewChat] = useState(false);
   const [userId, setUserId] = useState<string | null>("");

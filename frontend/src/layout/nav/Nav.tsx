@@ -2,7 +2,6 @@ import { useState } from "react";
 import { HeaderContainer } from "./styles";
 import { BiMessageSquare, BiLogOut, BiSearchAlt2 } from "react-icons/bi";
 import { FaUserFriends } from "react-icons/fa";
-import { IoNotifications } from "react-icons/io5";
 import { HiHome } from "react-icons/hi";
 import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../store/store";
@@ -10,10 +9,9 @@ import { userLogout } from "../../slices/userSlices";
 import Search from "./components/Search";
 import Follows from "./components/Follows";
 import Messages from "./components/Messages";
-
-const user = JSON.parse(localStorage.getItem("App:user") || "{}");
 const Nav = () => {
-  console.log(user);
+  
+  const user = JSON.parse(localStorage.getItem("App:user") || "{}");
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();

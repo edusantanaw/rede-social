@@ -10,8 +10,7 @@ import { RiUserFollowFill } from "react-icons/ri";
 import { useAppDispatch } from "../../../store/store";
 import { addUserFollow } from "../../../slices/userSlices";
 
-const user = JSON.parse(localStorage.getItem("App:user") || "{}");
-const token = localStorage.getItem("@App:token");
+
 
 interface user {
   name: string;
@@ -22,6 +21,10 @@ interface user {
 }
 
 const Perfil = ({ data, current }: { data: user; current: boolean }) => {
+ 
+  const user = JSON.parse(localStorage.getItem("App:user") || "{}");
+const token = localStorage.getItem("@App:token");
+  
   const [following, setFollowing] = useState<user[]>([]);
   const [followers, setFollowers] = useState<user[]>([]);
   const [showFollowers, setShowFollowers] = useState(false);

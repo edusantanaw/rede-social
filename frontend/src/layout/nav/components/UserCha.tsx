@@ -5,8 +5,6 @@ import socket from "../../../services/chatService";
 import { FaAngleRight } from "react-icons/fa";
 import { Container } from "./styles/chat";
 
-const token = localStorage.getItem("@App:token");
-
 interface message {
   id?: string;
   userSend?: string;
@@ -27,6 +25,7 @@ const UserChat = ({
   userChat: any;
   closeChat: () => void;
 }) => {
+  const token = localStorage.getItem("@App:token");
   const newMessage = useRef<HTMLInputElement | null>(null);
   const [mesages, setMessages] = useState<message[]>([]);
   const [room, setRoom] = useState("");
@@ -113,4 +112,3 @@ const UserChat = ({
 };
 
 export default UserChat;
-

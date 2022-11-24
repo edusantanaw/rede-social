@@ -3,8 +3,6 @@ import { Link } from "react-router-dom";
 import { Api } from "../../../utils/api";
 import { Container } from "./styles/search";
 
-const token = localStorage.getItem("@App:token");
-
 interface user {
   name: string;
   perfilPhoto: string;
@@ -12,6 +10,7 @@ interface user {
 }
 
 const Search = () => {
+  const token = localStorage.getItem("@App:token");
   const search = useRef<HTMLInputElement | null>(null);
   const [users, setUsers] = useState<user[]>([]);
 
@@ -39,23 +38,24 @@ const Search = () => {
         ref={search}
       />
       <ul>
-        {users.length > 0
-          ? users.map((user: user, i: number) => (
-             <Link to={`/perfil/${user.id}`} key={i}>
-             <li >
+        {users.length > 0 ? (
+          users.map((user: user, i: number) => (
+            <Link to={`/perfil/${user.id}`} key={i}>
+              <li>
                 <img
                   src={`http://localhost:5001/users/${user.perfilPhoto}`}
                   alt="user photo"
                 />
                 <span>{user.name}</span>
               </li>
-              </Link>
-            ))
-          : <span>Not found!</span>}
+            </Link>
+          ))
+        ) : (
+          <span>Not found!</span>
+        )}
       </ul>
     </Container>
   );
 };
 
 export default Search;
-
