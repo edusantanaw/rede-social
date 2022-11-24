@@ -18,6 +18,11 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  position: fixed;
+  background-color: #00000026;
+  z-index: 20;
+  top: 0;
+  left: 0;
   .loader {
     padding: 1em;
     border: 2px solid #ffffff72;

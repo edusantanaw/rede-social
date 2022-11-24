@@ -9,7 +9,7 @@ import ChatMessage from "../controllers/chat/chatController";
 const authController = new AuthController();
 const postController = new PostController();
 const userController = new UserController();
-const messageController = new ChatMessage()
+const chatController = new ChatMessage()
 
 const router = Router();
 
@@ -48,9 +48,9 @@ router.patch(
 );
 
 // chat
-router.get("/messages", verifyTokenExists, messageController.getAllMessage)
-router.get("/messages/:id", verifyTokenExists, messageController.getUserMessage)
-router.get("/room", verifyTokenExists, messageController.getUsersRoom)
+router.get("/messages", verifyTokenExists, chatController.getAllMessage)
+router.get("/messages/:id", verifyTokenExists, chatController.getUserMessage)
+router.get("/room", verifyTokenExists, chatController.getUsersRoom)
 
 
 //posts routes

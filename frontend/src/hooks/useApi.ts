@@ -1,16 +1,15 @@
 import { Api } from "../utils/api";
 import { useState, useEffect } from "react";
 
-
 const token = localStorage.getItem("@App:token");
 
-export  function useApi(url: string, dependence?: any) {
+export function useApi(url: string, dependence?: any) {
   const [data, setData] = useState<any>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string>("");
-  
+
   useEffect(() => {
-    Api.get(url ? url : '/', {
+    Api.get(url ? url : "/", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -22,7 +21,9 @@ export  function useApi(url: string, dependence?: any) {
         setError(error.response.data);
       })
       .finally(() => {
-        setLoading(false);
+        setTimeout(() => {
+          setLoading(false);
+        }, 1000);
       });
   }, [dependence]);
 

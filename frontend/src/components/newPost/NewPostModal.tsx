@@ -1,4 +1,3 @@
-import styled from "styled-components";
 import { useAppDispatch } from "../../store/store";
 import { newPost as create } from "../../slices/postSlices";
 import React, { useRef, useState } from "react";
@@ -12,7 +11,7 @@ const NewPost = ({ handleModal }: { handleModal: () => void }) => {
   const content = useRef<HTMLTextAreaElement | null>(null);
   const [image, setImage] = useState<File | string>("");
   const navigate = useNavigate()
-
+  console.log(user.id)
   const handleImage = (e: React.FormEvent<HTMLInputElement>) => {
     const img = (e.target as HTMLInputElement).files;
     console.log(img)

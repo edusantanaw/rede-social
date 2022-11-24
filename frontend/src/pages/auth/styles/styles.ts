@@ -108,6 +108,7 @@ export const Container = styled.section`
 
   @media (max-width: 900px){
     justify-content: center;
+    
     .logo{
       display: none;
     }

@@ -26,10 +26,10 @@ const Messages = () => {
         Authorization: `Bearer ${toke}`,
       },
     }).then((response) => {
-      const chats = response.data
-      setChats(chats)
-        console.log(response)
-        });
+      const chats = response.data;
+      setChats(chats);
+      console.log(response);
+    });
   }, []);
 
   const closeChat = async () => {
@@ -52,32 +52,34 @@ const Messages = () => {
           followerId={userId}
         />
       )}
-      <div>
-        <h2>Chats</h2>
-        <ul>
-          {chats ? (
-            chats.map((userId: user, i: number) => (
-              <li
-                key={i}
-                onClick={async () => {
-                  newChat && (await closeChat());
-                  setNewChat(true);
-                  handleChat(userId.id);
-                  setUserChat(userId);
-                }}
-              >
-                <img
-                  src={`http://localhost:5001/users/${userId.perfilPhoto}`}
-                  alt="user photo"
-                />
-                <span>{userId.name}</span>
-              </li>
-            ))
-          ) : (
-            <span>Chats not found!</span>
-          )}
-        </ul>
-      </div>
+      {chats.length > 0 && (
+        <div>
+          <h2>Chats</h2>
+          <ul>
+            {chats ? (
+              chats.map((userId: user, i: number) => (
+                <li
+                  key={i}
+                  onClick={async () => {
+                    newChat && (await closeChat());
+                    setNewChat(true);
+                    handleChat(userId.id);
+                    setUserChat(userId);
+                  }}
+                >
+                  <img
+                    src={`http://localhost:5001/users/${userId.perfilPhoto}`}
+                    alt="user photo"
+                  />
+                  <span>{userId.name}</span>
+                </li>
+              ))
+            ) : (
+              <span>Chats not found!</span>
+            )}
+          </ul>
+        </div>
+      )}
       <div>
         <h2>Users</h2>
         <ul>
@@ -109,4 +111,3 @@ const Messages = () => {
 };
 
 export default Messages;
-

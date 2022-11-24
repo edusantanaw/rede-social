@@ -54,6 +54,7 @@ const PostModal = ({
         user: user,
         id: user.id,
       };
+      comment.current.value = ""
       setComments((list) => [...list, newComment]);
       await dispatch(addNewComment(data));
     }

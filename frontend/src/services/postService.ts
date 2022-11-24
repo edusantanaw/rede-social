@@ -1,4 +1,5 @@
 import { Api } from "../utils/api";
+import { getUserAndToken } from "./userService";
 
 interface Post {
   content?: string;
@@ -8,9 +9,11 @@ interface Post {
 
 // 0800722240;
 
-const token = localStorage.getItem("@App:token");
 
 export async function post(data: FormData) {
+  const token = getUserAndToken()
+  console.log(token)
+
   const response = await Api.post("/posts", data, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -23,6 +26,7 @@ export async function post(data: FormData) {
 }
 
 export async function remove(id: string) {
+  const token = getUserAndToken()
   const response = await Api.post(`/${id}`, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -35,6 +39,7 @@ export async function remove(id: string) {
 }
 
 export async function addLike(id: string) {
+  const token = getUserAndToken()
   const response = await Api.post(`/posts/like/${id}`, id, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -47,6 +52,7 @@ export async function addLike(id: string) {
 }
 
 export async function newComment(data: { id: string; comment: string }) {
+  const token = getUserAndToken()
   const response = Api.post(`/posts/comments/${data.id}`, data, {
     headers: {
       Authorization: `Bearer ${token}`,

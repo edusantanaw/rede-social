@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { Api } from "../../utils/api";
 import { List } from "./styles";
 
-const token = localStorage.getItem("@App:token");
+
 interface post {
   content?: string;
   id: string;
@@ -14,6 +14,7 @@ interface post {
 }
 
 const Posts = ({ url, depence }: { url: string; depence?: any }) => {
+  const token = localStorage.getItem("@App:token");
   const [currentPage, setCurrentPage] = useState(0);
   const listRef = useRef<HTMLDivElement | null>(null);
   const [data, setData] = useState<post[]>([]);

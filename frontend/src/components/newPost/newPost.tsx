@@ -1,8 +1,8 @@
-const user = JSON.parse(localStorage.getItem("App:user") || "{}");
 import { BsFillImageFill } from "react-icons/bs";
 import { NewPostContainer } from "./styles";
 
 const NewPost = ({ handleModal }: { handleModal: () => void }) => {
+const user = JSON.parse(localStorage.getItem("App:user") || "{}");
   return (
     <NewPostContainer onClick={handleModal}>
       <div className="top">
